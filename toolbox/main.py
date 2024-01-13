@@ -101,5 +101,6 @@ def seed_sequence_templates_table():
             db.session.add(sequence)
         db.session.commit()
 
+
 if __name__ == "__main__":
     app()

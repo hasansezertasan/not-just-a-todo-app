@@ -120,10 +120,10 @@ class Sequence(db.Model, StandardMixin, AllFeaturesMixin, UserPropertyMixin):
         completed_tasks = [task for task in self.tasks if task.date_completed is not None]
         return len(completed_tasks)
 
-
     @property
     def tasks_summary(self):
         return [f"{'✔️' if task.date_completed else '❌'} {task.name}" for task in self.tasks]
+
 
 class Task(db.Model, StandardMixin, AllFeaturesMixin, UserPropertyMixin):
     __tablename__ = "task"

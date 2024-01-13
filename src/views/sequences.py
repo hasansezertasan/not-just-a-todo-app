@@ -1,14 +1,15 @@
+import datetime
+
 from flask import redirect, url_for
 from flask_admin import expose
 from flask_admin.model.template import EndpointLinkRowAction, LinkRowAction, TemplateLinkRowAction
-from markupsafe import Markup
 from flask_login import current_user
+from markupsafe import Markup
 from wtforms import TextAreaField
 
 from src.db import Sequence, SequenceTemplate, Task, TaskTemplate, db
-import datetime
 
-from .mixins import MemberMixin, ModelViewMixin, MemberPropertyMixin
+from .mixins import MemberMixin, MemberPropertyMixin, ModelViewMixin
 
 
 class SequenceTemplateView(MemberMixin, MemberPropertyMixin, ModelViewMixin):
@@ -124,6 +125,7 @@ class SequenceView(MemberMixin, MemberPropertyMixin, ModelViewMixin):
         "tasks_summary": lambda v, c, m, p: Markup("<br>".join(m.tasks_summary)),
         "progress": lambda v, c, m, p: f"{m.completed_task_count}/{m.task_count}",
     }
+
     @expose("/progress/<int:id>", methods=["GET"])
     def progress(self, id):
         sequence = Sequence.find_by_id(id)

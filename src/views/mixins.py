@@ -20,6 +20,7 @@ class MemberPropertyMixin(ModelView):
     def get_count_query(self):
         return super().get_count_query().filter_by(user_id=current_user.id)
 
+
 class AnonymousMixin:
     def is_accessible(self):
         return not current_user.is_authenticated

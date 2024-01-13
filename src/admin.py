@@ -1,6 +1,6 @@
 from flask_admin import Admin
 
-from .db import SequenceTemplate, db, Sequence
+from .db import Sequence, SequenceTemplate, db
 from .views.about import AboutView
 from .views.index import IndexView
 from .views.profile import ChangePasswordView, EditProfileView, LoginView, LogoutView, RegisterView
@@ -84,4 +84,3 @@ admin.add_view(
         endpoint="sequence",
     )
 )
-
