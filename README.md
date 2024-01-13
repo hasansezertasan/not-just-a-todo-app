@@ -32,4 +32,4 @@ I can think of some features that I want to implement:
 
 ## License
 
-This project is licensed under the terms of the [MIT](https://spdx.org/licenses/MIT.html)MIT license.
+This project is licensed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
