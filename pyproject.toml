@@ -15,7 +15,7 @@ toolbox = { callable = "toolbox.main:app"}
 [tool.poetry.dependencies]
 python = ">=3.11,<3.12"
 bcrypt = "^4.1.2"
-sqlalchemy-utils = { extras = ["password"], version = "^0.41.1" }
+sqlalchemy-utils = { extras = ["email", "password"], version = "^0.41.1" }
 sqlalchemy-mixins = "^2.0.5"
 alembic = "^1.13.1"
 Flask = "^3.0.0"
