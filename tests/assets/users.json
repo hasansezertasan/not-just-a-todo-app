@@ -1,0 +1,74 @@
+[
+    {
+        "username": "hasansezertasan",
+        "password": "hasansezertasan",
+        "first_name": "Hasan Sezer",
+        "last_name": "Taşan",
+        "email": "hasansezertasan@gmail.com",
+        "role": "SUPERUSER"
+    },
+    {
+        "username": "richardhendricks",
+        "password": "richardhendricks",
+        "first_name": "richard",
+        "last_name": "hendricks",
+        "email": "richardhendricks@piedpiper.com",
+        "role": "USER"
+    },
+    {
+        "username": "dineshchugtai",
+        "password": "goldenchain",
+        "first_name": "Dinesh",
+        "last_name": "Chugtai",
+        "email": "dineshchugtai@nothotdog.com",
+        "role": "USER"
+    },
+    {
+        "username": "gilfoyle",
+        "password": "sonofanton",
+        "first_name": "Gilfoyle",
+        "last_name": "Bertram",
+        "email": "gilfoyle@bertram.xyz",
+        "role": "BLOCKED"
+    },
+    {
+        "username": "jared",
+        "password": "jared",
+        "first_name": "Jared",
+        "last_name": "Dunn",
+        "email": "jareddunn@piedpiper.com",
+        "role": "USER"
+    },
+    {
+        "username": "erlichbachman",
+        "password": "erlichbachman",
+        "first_name": "Erlich",
+        "last_name": "Bachman",
+        "email": "erlichbachman@aviato.com",
+        "role": "USER"
+    },
+    {
+        "username": "password",
+        "password": "password",
+        "first_name": "Nelson",
+        "last_name": "Bighetti",
+        "email": "bighead@hotmail.com",
+        "role": "USER"
+    },
+    {
+        "username": "gavinbelson",
+        "password": "gavinbelson",
+        "first_name": "Gavin",
+        "last_name": "Belson",
+        "email": "gavin@holi.com",
+        "role": "USER"
+    },
+    {
+        "username": "petergregory",
+        "password": "petergregory",
+        "first_name": "Peter",
+        "last_name": "Gregory",
+        "email": "peter@raviga.com",
+        "role": "USER"
+    }
+]

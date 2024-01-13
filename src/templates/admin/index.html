@@ -1,0 +1,21 @@
+{% from 'bootstrap5/form.html' import render_form %}
+{% extends "admin/master.html" %}
+
+{% block title %}This is not just a todo app{% endblock %}
+{% block body %}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            {% if error is defined %}
+            <div class="alert alert-danger" role="alert">{{error}}</div>
+            {% endif %}
+
+            <h1 class="text-danger my-3 ml-3">{{admin_view.name}}</h1>
+            <p>{{admin_view.name}}</p>
+        </div>
+    </div>
+</div>
+
+{% endblock body %}
