@@ -106,7 +106,7 @@ class Sequence(db.Model, StandardMixin, AllFeaturesMixin, UserPropertyMixin):
     name: Mapped[str]
     description: Mapped[str]
     template_id: Mapped[int] = mapped_column(ForeignKey("sequence_template.id"))
-    tasks: Mapped[list["Task"]] = relationship(back_populates="sequence")
+    tasks: Mapped[list["Task"]] = relationship(back_populates="sequence", cascade="all, delete-orphan")
 
     def __repr__(self) -> str:
         return self.name
