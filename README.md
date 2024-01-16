@@ -6,10 +6,33 @@
 
 - [Not Just a Todo App](#not-just-a-todo-app)
   - [Table of Contents](#table-of-contents)
+  - [Screenshots](#screenshots)
+    - [Register Page](#register-page)
+    - [Login Page](#login-page)
+    - [Sequence List View](#sequence-list-view)
+    - [Sequence Progress Page](#sequence-progress-page)
   - [Features](#features)
   - [About](#about)
   - [TODO](#todo)
   - [License](#license)
+
+## Screenshots
+
+### Register Page
+
+![Register Page](assets/register-page.png)
+
+### Login Page
+
+![Login Page](assets/login-page.png)
+
+### Sequence List View
+
+![Sequence List View](assets/sequence-list-view.png)
+
+### Sequence Progress Page
+
+![Sequence Progress Page](assets/sequence-progress.png)
 
 ## Features
 
