@@ -14,13 +14,29 @@ class RegisterForm(FlaskForm):
         label="Password",
         validators=[DataRequired()],
         description="Enter your password.",
-        render_kw={"class": "form-control", "placeholder": "Password"},
+        render_kw={
+            "class": "form-control",
+            "placeholder": "Password",
+            "data-toggle": "password",
+            "data-placement": "before",
+            "data-message": "Show/Hide Password",
+            "data-eye-open-class": "fa-toggle-off",
+            "data-eye-close-class": "fa-toggle-on",
+        },
     )
     password_again = PasswordField(
         label="Password Again",
         validators=[DataRequired(), EqualTo("password")],
         description="Enter your password again.",
-        render_kw={"class": "form-control", "placeholder": "Password Again"},
+        render_kw={
+            "class": "form-control",
+            "placeholder": "Password Again",
+            "data-toggle": "password",
+            "data-placement": "before",
+            "data-message": "Show/Hide Password",
+            "data-eye-open-class": "fa-toggle-off",
+            "data-eye-close-class": "fa-toggle-on",
+        },
     )
     first_name = StringField(
         label="First Name",
@@ -58,7 +74,15 @@ class LoginForm(FlaskForm):
         label="Password",
         validators=[DataRequired()],
         description="Enter your password.",
-        render_kw={"class": "form-control", "placeholder": "Password"},
+        render_kw={
+            "class": "form-control",
+            "placeholder": "Password",
+            "data-toggle": "password",
+            "data-placement": "before",
+            "data-message": "Show/Hide Password",
+            "data-eye-open-class": "fa-toggle-off",
+            "data-eye-close-class": "fa-toggle-on",
+        },
     )
     submit = SubmitField(
         label="Sign In",
@@ -72,19 +96,43 @@ class ChangePasswordForm(FlaskForm):
         label="Password",
         validators=[DataRequired()],
         description="Enter your password.",
-        render_kw={"class": "form-control", "placeholder": "Password"},
+        render_kw={
+            "class": "form-control",
+            "placeholder": "Password",
+            "data-toggle": "password",
+            "data-placement": "before",
+            "data-message": "Show/Hide Password",
+            "data-eye-open-class": "fa-toggle-off",
+            "data-eye-close-class": "fa-toggle-on",
+        },
     )
     new_password = PasswordField(
         label="New Password",
         validators=[DataRequired()],
         description="Enter your new password.",
-        render_kw={"class": "form-control", "placeholder": "New password"},
+        render_kw={
+            "class": "form-control",
+            "placeholder": "New password",
+            "data-toggle": "password",
+            "data-placement": "before",
+            "data-message": "Show/Hide Password",
+            "data-eye-open-class": "fa-toggle-off",
+            "data-eye-close-class": "fa-toggle-on",
+        },
     )
     new_password_again = PasswordField(
         label="New Password Again",
         validators=[DataRequired(), EqualTo("new_password")],
         description="Enter your new password again.",
-        render_kw={"class": "form-control", "placeholder": "New password again"},
+        render_kw={
+            "class": "form-control",
+            "placeholder": "New password again",
+            "data-toggle": "password",
+            "data-placement": "before",
+            "data-message": "Show/Hide Password",
+            "data-eye-open-class": "fa-toggle-off",
+            "data-eye-close-class": "fa-toggle-on",
+        },
     )
     submit = SubmitField(
         label="Change Password",
