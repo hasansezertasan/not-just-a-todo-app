@@ -12,6 +12,10 @@ from ._types import UserRole
 db = SQLAlchemy()
 
 
+class Base(db.Model):  # type: ignore
+    __abstract__ = True
+
+
 class StandardMixin:
     id: Mapped[int] = mapped_column(
         primary_key=True,
@@ -42,7 +46,7 @@ class StandardMixin:
         db.session.commit()
 
 
-class User(db.Model, UserMixin, StandardMixin, AllFeaturesMixin):  # type: ignore
+class User(Base, UserMixin, StandardMixin, AllFeaturesMixin):
     __tablename__ = "user"
     __repr_attrs__ = ["username"]
     username: Mapped[str] = mapped_column(unique=True)
@@ -77,7 +81,7 @@ class UserPropertyMixin:
         return relationship("User")
 
 
-class SequenceTemplate(db.Model, StandardMixin, AllFeaturesMixin, UserPropertyMixin):  # type: ignore
+class SequenceTemplate(Base, StandardMixin, AllFeaturesMixin, UserPropertyMixin):
     __tablename__ = "sequence_template"
     __repr_attrs__ = ["name"]
     name: Mapped[str]
@@ -86,7 +90,7 @@ class SequenceTemplate(db.Model, StandardMixin, AllFeaturesMixin, UserPropertyMi
     # A column to set a time limit for the sequence
 
 
-class TaskTemplate(db.Model, StandardMixin, AllFeaturesMixin, UserPropertyMixin):  # type: ignore
+class TaskTemplate(Base, StandardMixin, AllFeaturesMixin, UserPropertyMixin):
     __tablename__ = "task_template"
     __repr_attrs__ = ["name"]
     name: Mapped[str]
@@ -95,7 +99,7 @@ class TaskTemplate(db.Model, StandardMixin, AllFeaturesMixin, UserPropertyMixin)
     sequence_template: Mapped[SequenceTemplate] = relationship(back_populates="tasks")
 
 
-class Sequence(db.Model, StandardMixin, AllFeaturesMixin, UserPropertyMixin):  # type: ignore
+class Sequence(Base, StandardMixin, AllFeaturesMixin, UserPropertyMixin):
     __tablename__ = "sequence"
     __repr_attrs__ = ["name"]
     name: Mapped[str]
@@ -117,7 +121,7 @@ class Sequence(db.Model, StandardMixin, AllFeaturesMixin, UserPropertyMixin):  #
         return [f"{'✔️' if task.date_completed else '❌'} {task.name}" for task in self.tasks]
 
 
-class Task(db.Model, StandardMixin, AllFeaturesMixin, UserPropertyMixin):  # type: ignore
+class Task(Base, StandardMixin, AllFeaturesMixin, UserPropertyMixin):
     __tablename__ = "task"
     __repr_attrs__ = ["name"]
     name: Mapped[str]
