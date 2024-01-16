@@ -1,6 +1,6 @@
-from flask import redirect, request, url_for
+from flask import flash, redirect, request, url_for
 from flask_admin import BaseView, expose
-from flask_login import current_user, login_required, login_user, logout_user
+from flask_login import current_user, login_user, logout_user
 
 from src.db import User
 from src.forms import ChangePasswordForm, EditProfileForm, LoginForm, RegisterForm
@@ -20,17 +20,11 @@ class LoginView(AnonymousMixin, BaseView):
             user = User.query.filter_by(username=username).first()
             if user and user.hashed_password == password:
                 login_user(user)
+                flash("You are now logged in.", "success")
                 return redirect(url_for("admin.index"))
             else:
-                return self.render(
-                    "admin/form-page.html",
-                    form=form,
-                    error="Invalid username or password.",
-                )
-        return self.render(
-            "admin/form-page.html",
-            form=form,
-        )
+                flash("Invalid username or password.", "danger")
+        return self.render(template="admin/password-form-page.html", form=form)
 
 
 class RegisterView(AnonymousMixin, BaseView):
@@ -43,11 +37,8 @@ class RegisterView(AnonymousMixin, BaseView):
             username = form.username.data
             found = User.query.filter_by(username=username).first()
             if found:
-                return self.render(
-                    "admin/register.html",
-                    form=form,
-                    error="Username already exists.",
-                )
+                flash("Username already exists.", "danger")
+                return self.render(template="admin/password-form-page.html", form=form)
 
             user = User(
                 username=username,
@@ -57,47 +48,30 @@ class RegisterView(AnonymousMixin, BaseView):
                 email=form.email.data,
             )
             user.upsert()
-            return self.render(
-                "admin/form-page.html",
-                form=form,
-                error="Thank you for registering. Please login.",
-            )
-        return self.render("admin/form-page.html", form=form)
+            flash("Thank you for registering. Please login.", "success")
+            return redirect(url_for("login.index"))
+        return self.render(template="admin/password-form-page.html", form=form)
 
 
 class LogoutView(MemberMixin, BaseView):
     @expose("/", methods=["GET"])
     def index(self):
         logout_user()
+        flash("You are now logged out.", "success")
         return redirect(url_for("admin.index"))
 
 
 class EditProfileView(MemberMixin, BaseView):
     @expose("/", methods=["GET", "POST"])
     def index(self):
-        print(self.name)
         form = EditProfileForm(obj=current_user._get_current_object())
         if request.method == "POST" and form.validate_on_submit():
-            user: User = User.query.filter_by(username=current_user.username).first()
-            if user:
-                current_user.first_name = form.first_name.data
-                current_user.last_name = form.last_name.data
-                current_user.email = form.email.data
-                current_user.upsert()
-                return self.render(
-                    "admin/form-page.html",
-                    form=form,
-                    error="Profile updated.",
-                )
-            return self.render(
-                "admin/form-page.html",
-                form=form,
-                error="User not found.",
-            )
-        return self.render(
-            "admin/form-page.html",
-            form=form,
-        )
+            current_user.first_name = form.first_name.data
+            current_user.last_name = form.last_name.data
+            current_user.email = form.email.data
+            current_user.upsert()
+            flash("Profile updated.", "success")
+        return self.render(template="admin/form-page.html", form=form)
 
 
 class ChangePasswordView(MemberMixin, BaseView):
@@ -105,24 +79,11 @@ class ChangePasswordView(MemberMixin, BaseView):
     def index(self):
         form = ChangePasswordForm()
         if request.method == "POST" and form.validate_on_submit():
-            if form.new_password.data != form.new_password_again.data:
-                return self.render(
-                    "admin/form-page.html",
-                    form=form,
-                    error="New passwords do not match.",
-                )
-            user: User = User.query.filter_by(username=current_user.username).first()
-            if user and user.hashed_password == form.password.data:
-                user.hashed_password = form.new_password.data
-                user.upsert()
+            if current_user.hashed_password == form.password.data:
+                current_user.hashed_password = form.new_password.data
+                current_user.upsert()
                 logout_user()
+                flash("Password changed successfully. Please login.", "success")
                 return redirect(url_for("admin.index"))
-            return self.render(
-                "admin/form-page.html",
-                form=form,
-                error="Invalid password.",
-            )
-        return self.render(
-            "admin/form-page.html",
-            form=form,
-        )
+            flash("Invalid password.", "danger")
+        return self.render("admin/password-form-page.html", form=form)
