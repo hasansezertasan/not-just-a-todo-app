@@ -42,8 +42,9 @@ class StandardMixin:
         db.session.commit()
 
 
-class User(db.Model, UserMixin, StandardMixin, AllFeaturesMixin):
+class User(db.Model, UserMixin, StandardMixin, AllFeaturesMixin):  # type: ignore
     __tablename__ = "user"
+    __repr_attrs__ = ["username"]
     username: Mapped[str] = mapped_column(unique=True)
     hashed_password: Mapped[str] = mapped_column(
         PasswordType(
@@ -65,9 +66,6 @@ class User(db.Model, UserMixin, StandardMixin, AllFeaturesMixin):
     )
     role: Mapped[UserRole] = mapped_column(default=UserRole.USER)
 
-    def __repr__(self):
-        return self.username
-
 
 class UserPropertyMixin:
     @declared_attr
@@ -79,37 +77,31 @@ class UserPropertyMixin:
         return relationship("User")
 
 
-class SequenceTemplate(db.Model, StandardMixin, AllFeaturesMixin, UserPropertyMixin):
+class SequenceTemplate(db.Model, StandardMixin, AllFeaturesMixin, UserPropertyMixin):  # type: ignore
     __tablename__ = "sequence_template"
+    __repr_attrs__ = ["name"]
     name: Mapped[str]
     description: Mapped[str]
     tasks: Mapped[list["TaskTemplate"]] = relationship(back_populates="sequence_template")
     # A column to set a time limit for the sequence
 
-    def __repr__(self) -> str:
-        return self.name
 
-
-class TaskTemplate(db.Model, StandardMixin, AllFeaturesMixin, UserPropertyMixin):
+class TaskTemplate(db.Model, StandardMixin, AllFeaturesMixin, UserPropertyMixin):  # type: ignore
     __tablename__ = "task_template"
+    __repr_attrs__ = ["name"]
     name: Mapped[str]
     description: Mapped[str]
     sequence_template_id: Mapped[int] = mapped_column(ForeignKey("sequence_template.id"))
     sequence_template: Mapped[SequenceTemplate] = relationship(back_populates="tasks")
 
-    def __repr__(self) -> str:
-        return self.name
 
-
-class Sequence(db.Model, StandardMixin, AllFeaturesMixin, UserPropertyMixin):
+class Sequence(db.Model, StandardMixin, AllFeaturesMixin, UserPropertyMixin):  # type: ignore
     __tablename__ = "sequence"
+    __repr_attrs__ = ["name"]
     name: Mapped[str]
     description: Mapped[str]
     template_id: Mapped[int] = mapped_column(ForeignKey("sequence_template.id"))
     tasks: Mapped[list["Task"]] = relationship(back_populates="sequence", cascade="all, delete-orphan")
-
-    def __repr__(self) -> str:
-        return self.name
 
     @property
     def task_count(self):
@@ -125,13 +117,11 @@ class Sequence(db.Model, StandardMixin, AllFeaturesMixin, UserPropertyMixin):
         return [f"{'✔️' if task.date_completed else '❌'} {task.name}" for task in self.tasks]
 
 
-class Task(db.Model, StandardMixin, AllFeaturesMixin, UserPropertyMixin):
+class Task(db.Model, StandardMixin, AllFeaturesMixin, UserPropertyMixin):  # type: ignore
     __tablename__ = "task"
+    __repr_attrs__ = ["name"]
     name: Mapped[str]
     description: Mapped[str]
     sequence_id: Mapped[int] = mapped_column(ForeignKey("sequence.id"))
     sequence: Mapped[Sequence] = relationship(back_populates="tasks")
     date_completed: Mapped[datetime.datetime | None]
-
-    def __repr__(self) -> str:
-        return self.name
