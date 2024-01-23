@@ -13,7 +13,6 @@
     - [Sequence Progress Page](#sequence-progress-page)
   - [Features](#features)
   - [About](#about)
-  - [TODO](#todo)
   - [License](#license)
 
 ## Screenshots
@@ -45,13 +44,6 @@
 > Birthday of the idea: 16 February 2023 Thursday - 19:00 (It's all clear now...)
 
 The application is built using Flask Admin and Flask Login and it's a Flask Admin driven application. All pages delivered using Flask Admin views. In summary, it's an attempt to use Flask Admin as a user interface instead of just using it as an administrative interface or admin only interface.
-
-## TODO
-
-I can think of some features that I want to implement:
-
-- Daily Routine (automatically instantiated every day)
-- Instant Tasks (tasks that are not in a sequence)
 
 ## License
 
