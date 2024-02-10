@@ -49,6 +49,8 @@ I decided to develop an admin-interface-driven application with Flask, Flask Log
 
 In summary, it's an attempt to use Flask Admin as a user interface instead of just using it as an administrative interface or admin only interface.
 
+> Before I forget, I didn't write a single line of JavaScript, thanks to HTMX...
+
 ## License
 
 This project is licensed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
