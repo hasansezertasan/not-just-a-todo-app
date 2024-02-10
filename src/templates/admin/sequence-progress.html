@@ -1,47 +1,45 @@
-{% from 'bootstrap5/form.html' import render_form %}
-{% extends 'admin/base.html' %}
+{% from "bootstrap5/form.html" import render_form %}
+
+{% extends "admin/base.html" %}
 
 {% block body %}
 
-{{ super() }}
-
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h1 class="text-danger my-3 ml-3">{{sequence.name}}</h1>
-            <p>{{sequence.description}}</p>
-            <table class="table table-striped table-bordered table-hover model-list">
-                <thead>
-                    <tr>
-                        <th class="column-header">Name</th>
-                        <th class="column-header">Description</th>
-                        {% if sequence.task_count != sequence.completed_task_count %}
-                        <th class="column-header">Progress</th>
-                        {% endif %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for task in sequence.tasks %}
-                    <tr>
-                        <td>{{task.name}}</td>
-                        <td>{{task.description}}</td>
-                        {% if sequence.task_count != sequence.completed_task_count %}
-                        <td>
-                            {% if task.date_completed %}
-                            <span class="badge bg-success">Completed</span>
-                            {% else %}
-                            <span class="badge bg-danger">Not Completed</span>
-                            <a href="{{url_for('sequence.complete', id=sequence.id, task_id=task.id)}}"
-                                class="btn btn-success btn-sm">Complete</a>
-                            {% endif %}
-                        </td>
-                        {% endif %}
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+    {{ super() }}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-danger my-3 ml-3">{{ sequence.name }}</h1>
+                <p>{{ sequence.description }}</p>
+                <table class="table table-striped table-bordered table-hover model-list">
+                    <thead>
+                        <tr>
+                            <th class="column-header">Name</th>
+                            <th class="column-header">Description</th>
+                            {% if sequence.task_count != sequence.completed_task_count %}<th class="column-header">Progress</th>{% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for task in sequence.tasks %}
+                            <tr>
+                                <td>{{ task.name }}</td>
+                                <td>{{ task.description }}</td>
+                                {% if sequence.task_count != sequence.completed_task_count %}
+                                    <td>
+                                        {% if task.date_completed %}
+                                            <span class="badge bg-success">Completed</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">Not Completed</span>
+                                            <a href="{{ url_for('sequence.complete', _id=sequence.id, task_id=task.id) }}"
+                                               class="btn btn-success btn-sm">Complete</a>
+                                        {% endif %}
+                                    </td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
 
 {% endblock body %}

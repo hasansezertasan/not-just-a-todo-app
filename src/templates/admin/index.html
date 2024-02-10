@@ -1,17 +1,22 @@
-{% from 'bootstrap5/form.html' import render_form %}
+{% from "bootstrap5/form.html" import render_form %}
+
 {% extends "admin/master.html" %}
 
-{% block title %}This is not just a todo app{% endblock %}
+{% block title %}
+
+    This is not just a todo app
+
+{% endblock title %}
+
 {% block body %}
 
-
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h1 class="text-danger my-3 ml-3">{{admin_view.name}}</h1>
-            <p>{{admin_view.name}}</p>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-danger my-3 ml-3">{{ admin_view.name }}</h1>
+                <p>{{ admin_view.name }}</p>
+            </div>
         </div>
     </div>
-</div>
 
 {% endblock body %}

@@ -131,10 +131,10 @@ class SequenceView(MemberMixin, MemberPropertyMixin, ModelViewMixin):
         sequence = Sequence.find_by_id(id)
         return self.render("admin/sequence-progress.html", sequence=sequence)
 
-    @expose("/progress/<int:id>/task/<int:task_id>/complete", methods=["GET"])
-    def complete(self, id, task_id):
+    @expose("/progress/<int:_id>/task/<int:task_id>/complete", methods=["GET"])
+    def complete(self, _id, task_id):
         utcnow = datetime.datetime.utcnow()
         task = Task.query.filter(Task.id == task_id).first()
         task.date_completed = utcnow
         task.upsert()
-        return redirect(url_for("sequence.progress", id=id))
+        return redirect(url_for("sequence.progress", id=_id))
