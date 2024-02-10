@@ -1,6 +1,6 @@
 # Not Just a Todo App
 
-> Every dev needs to build a todo app...
+> Experimental - Every dev needs to build a todo app...
 
 ## Table of Contents
 
@@ -43,7 +43,11 @@
 
 > Birthday of the idea: 16 February 2023 Thursday - 19:00 (It's all clear now...)
 
-The application is built using Flask Admin and Flask Login and it's a Flask Admin driven application. All pages delivered using Flask Admin views. In summary, it's an attempt to use Flask Admin as a user interface instead of just using it as an administrative interface or admin only interface.
+It's been a long time since I planned to make this app. I also wanted to try something different. Likewise, I haven't been developing an application with Flask for a while and I wanted to refresh my Flask knowledge.
+
+I decided to develop an admin-interface-driven application with Flask, Flask Login and Flask Admin, Flask SQLAlchemy, Flask WTF and Bootstrap Flask. What I mean by admin-interface-driven is this: I haven't written a route with Flask, all pages delivered as Flask Admin views.
+
+In summary, it's an attempt to use Flask Admin as a user interface instead of just using it as an administrative interface or admin only interface.
 
 ## License
 
