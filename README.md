@@ -2,6 +2,8 @@
 
 > Experimental - Every dev needs to build a todo app...
 
+[![Code style: djlint](https://img.shields.io/badge/html%20style-djlint-blue.svg)](https://www.djlint.com)
+
 ## Table of Contents
 
 - [Not Just a Todo App](#not-just-a-todo-app)
