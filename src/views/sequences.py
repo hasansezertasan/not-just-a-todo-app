@@ -1,8 +1,14 @@
+# Copyright 2024 Hasan Sezer Taşan <hasansezertasan@gmail.com>
+# Copyright (C) 2024 <hasansezertasan@gmail.com>
 import datetime
 
 from flask import redirect, url_for
 from flask_admin import expose
-from flask_admin.model.template import EndpointLinkRowAction, LinkRowAction, TemplateLinkRowAction
+from flask_admin.model.template import (
+    EndpointLinkRowAction,
+    LinkRowAction,
+    TemplateLinkRowAction,
+)
 from flask_login import current_user
 from markupsafe import Markup
 from wtforms import TextAreaField
@@ -53,7 +59,9 @@ class SequenceTemplateView(MemberMixin, MemberPropertyMixin, ModelViewMixin):
     ]
     column_formatters = {
         "task_count": lambda v, c, m, p: len(m.tasks),
-        "tasks": lambda v, c, m, p: Markup("<br>".join([task.name for task in m.tasks])),
+        "tasks": lambda v, c, m, p: Markup(
+            "<br>".join([task.name for task in m.tasks])
+        ),
     }
     column_extra_row_actions = [
         EndpointLinkRowAction(
@@ -81,7 +89,11 @@ class SequenceTemplateView(MemberMixin, MemberPropertyMixin, ModelViewMixin):
             user_id=current_user.id,
         )
         for task_template in sequence_template.tasks:
-            task = Task(name=task_template.name, description=task_template.description, user_id=current_user.id)
+            task = Task(
+                name=task_template.name,
+                description=task_template.description,
+                user_id=current_user.id,
+            )
             sequence.tasks.append(task)
         sequence.upsert()
         return redirect(url_for("sequence.progress", id=sequence.id))

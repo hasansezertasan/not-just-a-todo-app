@@ -1,10 +1,17 @@
+# Copyright 2024 Hasan Sezer Taşan <hasansezertasan@gmail.com>
+# Copyright (C) 2024 <hasansezertasan@gmail.com>
 from flask_admin import Admin
 
 from .db import Sequence, SequenceTemplate, db
-from .views.about import AboutView
-from .views.index import IndexView
-from .views.profile import ChangePasswordView, EditProfileView, LoginView, LogoutView, RegisterView
-from .views.sequences import SequenceTemplateView, SequenceView
+from .views import AboutView as AboutView
+from .views import ChangePasswordView as ChangePasswordView
+from .views import EditProfileView as EditProfileView
+from .views import IndexView as IndexView
+from .views import LoginView as LoginView
+from .views import LogoutView as LogoutView
+from .views import RegisterView as RegisterView
+from .views import SequenceTemplateView as SequenceTemplateView
+from .views import SequenceView as SequenceView
 
 admin = Admin(
     name="Not Just a Todo App",
@@ -16,8 +23,8 @@ admin = Admin(
     ),
     template_mode="bootstrap4",
     endpoint="admin",
+    base_template="admin/master.html",
 )
-admin.add_category(name="Profile")
 admin.add_category(name="Home")
 admin.add_view(
     AboutView(
@@ -31,7 +38,6 @@ admin.add_view(
         name="Login",
         url="/login",
         endpoint="login",
-        category="Profile",
     )
 )
 admin.add_view(
@@ -39,7 +45,6 @@ admin.add_view(
         name="Register",
         url="/register",
         endpoint="register",
-        category="Profile",
     )
 )
 admin.add_view(
@@ -47,7 +52,6 @@ admin.add_view(
         name="Edit Profile",
         url="/edit-profile",
         endpoint="edit-profile",
-        category="Profile",
     )
 )
 admin.add_view(
@@ -55,7 +59,6 @@ admin.add_view(
         name="Change Password",
         url="/change-password",
         endpoint="change-password",
-        category="Profile",
     )
 )
 admin.add_view(
@@ -63,7 +66,6 @@ admin.add_view(
         name="Logout",
         url="/logout",
         endpoint="logout",
-        category="Profile",
     )
 )
 admin.add_view(

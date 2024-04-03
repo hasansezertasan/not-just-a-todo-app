@@ -16,26 +16,16 @@ repos:
         -   --unsafe
       - id: end-of-file-fixer
       - id: trailing-whitespace
-  # https://pycqa.github.io/isort/docs/configuration/pre-commit.html
-  - repo: https://github.com/pycqa/isort
-    rev: 5.13.2
-    hooks:
-      - id: isort
-        name: isort (python)
-        files: "\\.(py)$"
-        args: [--settings-path=pyproject.toml]
-  - repo: https://github.com/psf/black
-    rev: 24.3.0
-    hooks:
-      - id: black
-        language_version: python3.11
-        args: [--config=pyproject.toml]
-  # Check compliance with Ruff.
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.3.3
     hooks:
       - id: ruff
         name: ruff (python)
+        types_or: [ python, pyi, jupyter ]
+        args : [--config=pyproject.toml]
+      - id: ruff-format
+        name: ruff-format (python)
+        types_or: [ python, pyi, jupyter ]
         args : [--config=pyproject.toml]
   - repo: https://github.com/djlint/djLint
     rev: v1.34.1

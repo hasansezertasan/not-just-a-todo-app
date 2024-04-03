@@ -1,6 +1,6 @@
+# Copyright 2024 Hasan Sezer Taşan <hasansezertasan@gmail.com>
+# Copyright (C) 2024 <hasansezertasan@gmail.com>
 from flask_admin import BaseView, expose
-
-from .mixins import MemberMixin
 
 
 class AboutView(BaseView):

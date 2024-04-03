@@ -1,0 +1,28 @@
+{% extends "admin/base.html" %}
+{% block access_control %}
+    <div class="dropdown show">
+        <a class="btn btn-secondary dropdown-toggle"
+           href="#"
+           role="button"
+           id="dropdown-profile"
+           data-toggle="dropdown"
+           aria-haspopup="true"
+           aria-expanded="false">
+            {% if current_user.is_authenticated %}
+                {{ current_user.first_name }}
+            {% else -%}
+                Profile
+            {%- endif %}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="dropdown-profile">
+            {% if current_user.is_authenticated %}
+                <a class="dropdown-item" href="{{ url_for("edit-profile.index") }}">Profile</a>
+                <a class="dropdown-item" href="{{ url_for("change-password.index") }}">Change Password</a>
+                <a class="dropdown-item" href="{{ url_for("logout.index") }}">Log out</a>
+            {% else %}
+                <a class="dropdown-item" href="{{ url_for("login.index") }}">Login</a>
+                <a class="dropdown-item" href="{{ url_for("register.index") }}">Register</a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock access_control %}

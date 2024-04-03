@@ -9,8 +9,11 @@
 - [Not Just a Todo App](#not-just-a-todo-app)
   - [Table of Contents](#table-of-contents)
   - [Screenshots](#screenshots)
+    - [Home Page](#home-page)
+    - [About Page](#about-page)
     - [Register Page](#register-page)
     - [Login Page](#login-page)
+    - [Sequence Template List View](#sequence-template-list-view)
     - [Sequence List View](#sequence-list-view)
     - [Sequence Progress Page](#sequence-progress-page)
   - [Features](#features)
@@ -19,6 +22,14 @@
 
 ## Screenshots
 
+### Home Page
+
+![Home Page](assets/index-page.png)
+
+### About Page
+
+![About Page](assets/about-page.png)
+
 ### Register Page
 
 ![Register Page](assets/register-page.png)
@@ -26,6 +37,10 @@
 ### Login Page
 
 ![Login Page](assets/login-page.png)
+
+### Sequence Template List View
+
+![Sequence Template List View](assets/sequence-template-list-view.png)
 
 ### Sequence List View
 

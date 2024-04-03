@@ -1,15 +1,11 @@
-{% from "bootstrap5/form.html" import render_form %}
-
-{% extends "admin/base.html" %}
-
+{% extends "admin/master.html" %}
 {% block body %}
-
     {{ super() }}
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h1 class="text-danger my-3 ml-3">{{ sequence.name }}</h1>
-                <p>{{ sequence.description }}</p>
+                <h1>{{ sequence.name }}</h1>
+                <p class="lead text-muted">{{ sequence.description }}</p>
                 <table class="table table-striped table-bordered table-hover model-list">
                     <thead>
                         <tr>
@@ -41,5 +37,4 @@
             </div>
         </div>
     </div>
-
 {% endblock body %}

@@ -1,17 +1,13 @@
-{% from "bootstrap5/form.html" import render_form %}
-
-{% extends "admin/base.html" %}
-
+{% from "bootstrap4/form.html" import render_form %}
+{% extends "admin/master.html" %}
 {% block body %}
-
     {{ super() }}
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h1 class="text-danger my-3 ml-3">{{ admin_view.name }}</h1>
+                <h1>{{ admin_view.name }}</h1>
                 {{ render_form(form) }}
             </div>
         </div>
     </div>
-
 {% endblock body %}
