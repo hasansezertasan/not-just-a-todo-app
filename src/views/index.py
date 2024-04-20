@@ -17,7 +17,12 @@ class IndexView(AdminIndexView):
     @expose("/login/", methods=["GET", "POST"])
     def login_view(self):
         """Login view."""
-        self.extra_js = [url_for("static", filename="vendor/bootstrap-show-password/bootstrap-show-password.min.js")]
+        self.extra_js = [
+            url_for(
+                "static",
+                filename="vendor/bootstrap-show-password/bootstrap-show-password.min.js",
+            )
+        ]
         form = LoginForm()
         if request.method == "POST" and form.validate_on_submit():
             username = form.username.data
@@ -40,7 +45,12 @@ class IndexView(AdminIndexView):
     @expose("/register/", methods=["GET", "POST"])
     def register_view(self):
         """Register view."""
-        self.extra_js = [url_for("static", filename="vendor/bootstrap-show-password/bootstrap-show-password.min.js")]
+        self.extra_js = [
+            url_for(
+                "static",
+                filename="vendor/bootstrap-show-password/bootstrap-show-password.min.js",
+            )
+        ]
         form = RegisterForm()
         if request.method == "POST" and form.validate_on_submit():
             username = form.username.data
