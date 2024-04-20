@@ -18,10 +18,13 @@
             {% if current_user.is_authenticated %}
                 <a class="dropdown-item" href="{{ url_for("edit-profile.index") }}">Profile</a>
                 <a class="dropdown-item" href="{{ url_for("change-password.index") }}">Change Password</a>
-                <a class="dropdown-item" href="{{ url_for("logout.index") }}">Log out</a>
+                <a class="dropdown-item"
+                   href="{{ url_for(admin_view.admin.endpoint + ".logout_view") }}">Log out</a>
             {% else %}
-                <a class="dropdown-item" href="{{ url_for("login.index") }}">Login</a>
-                <a class="dropdown-item" href="{{ url_for("register.index") }}">Register</a>
+                <a class="dropdown-item"
+                   href="{{ url_for(admin_view.admin.endpoint + ".login_view") }}">Login</a>
+                <a class="dropdown-item"
+                   href="{{ url_for(admin_view.admin.endpoint + ".register_view") }}">Register</a>
             {% endif %}
         </div>
     </div>

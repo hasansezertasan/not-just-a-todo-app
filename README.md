@@ -55,6 +55,8 @@
 - Create Task Sequences as Templates
 - Instantiate Task Sequences
 - Complete tasks in Task Sequences
+- Login and Register
+- Change Password
 
 ## About
 
@@ -62,7 +64,9 @@
 
 It's been a long time since I planned to make this app. I also wanted to try something different. Likewise, I haven't been developing an application with Flask for a while and I wanted to refresh my Flask knowledge.
 
-I decided to develop an admin-interface-driven application with Flask, Flask Login and Flask Admin, Flask SQLAlchemy, Flask WTF and Bootstrap Flask. What I mean by admin-interface-driven is this: I haven't written a route with Flask, all pages delivered as Flask Admin views.
+I decided to develop an admin-interface-driven application with Flask, Flask Login and Flask Admin, Flask SQLAlchemy, Flask WTF and Bootstrap Flask.
+
+> What is admin-interface-driven? It's a term I just made up. It means that the entire application is managed through the admin interface, there are no hand-written routes. All pages are delivered as Flask Admin views.
 
 In summary, it's an attempt to use Flask Admin as a user interface instead of just using it as an administrative interface or admin only interface.
 

@@ -4,16 +4,12 @@ import datetime
 
 from flask import redirect, url_for
 from flask_admin import expose
-from flask_admin.model.template import (
-    EndpointLinkRowAction,
-    LinkRowAction,
-    TemplateLinkRowAction,
-)
+from flask_admin.model.template import EndpointLinkRowAction
 from flask_login import current_user
 from markupsafe import Markup
 from wtforms import TextAreaField
 
-from src.db import Sequence, SequenceTemplate, Task, TaskTemplate, db
+from src.db import Sequence, SequenceTemplate, Task, TaskTemplate
 
 from .mixins import MemberMixin, MemberPropertyMixin, ModelViewMixin
 

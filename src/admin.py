@@ -7,9 +7,6 @@ from .views import AboutView as AboutView
 from .views import ChangePasswordView as ChangePasswordView
 from .views import EditProfileView as EditProfileView
 from .views import IndexView as IndexView
-from .views import LoginView as LoginView
-from .views import LogoutView as LogoutView
-from .views import RegisterView as RegisterView
 from .views import SequenceTemplateView as SequenceTemplateView
 from .views import SequenceView as SequenceView
 
@@ -34,20 +31,6 @@ admin.add_view(
     )
 )
 admin.add_view(
-    LoginView(
-        name="Login",
-        url="/login",
-        endpoint="login",
-    )
-)
-admin.add_view(
-    RegisterView(
-        name="Register",
-        url="/register",
-        endpoint="register",
-    )
-)
-admin.add_view(
     EditProfileView(
         name="Edit Profile",
         url="/edit-profile",
@@ -59,13 +42,6 @@ admin.add_view(
         name="Change Password",
         url="/change-password",
         endpoint="change-password",
-    )
-)
-admin.add_view(
-    LogoutView(
-        name="Logout",
-        url="/logout",
-        endpoint="logout",
     )
 )
 admin.add_view(

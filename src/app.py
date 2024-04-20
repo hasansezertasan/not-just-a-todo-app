@@ -28,7 +28,7 @@ admin.init_app(app)
 migrate.init_app(app=app, db=db)
 db.init_app(app)
 login_manager.init_app(app)
-login_manager.login_view = "login.index"
+login_manager.login_view = admin.index_view.endpoint + ".login_view"
 
 
 # Login Manager

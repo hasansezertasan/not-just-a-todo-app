@@ -10,7 +10,7 @@ class MemberMixin:
         return current_user.is_authenticated
 
     def inaccessible_callback(self, name, **kwargs):
-        return redirect(url_for("login.index"))
+        return redirect(url_for(self.admin.endpoint + ".login_view"))
 
 
 class MemberPropertyMixin(ModelView):
@@ -26,7 +26,7 @@ class AnonymousMixin:
         return not current_user.is_authenticated
 
     def inaccessible_callback(self, name, **kwargs):
-        return redirect(url_for("admin.index"))
+        return redirect(url_for(self.admin.endpoint + ".index"))
 
 
 class InvisibleMixin:
