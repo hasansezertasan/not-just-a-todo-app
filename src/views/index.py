@@ -9,8 +9,6 @@ from src.forms import LoginForm, RegisterForm
 
 
 class IndexView(AdminIndexView):
-    bootstra_show_password_js = "https://unpkg.com/bootstrap-show-password@1.2.1/dist/bootstrap-show-password.min.js"
-
     @expose(url="/", methods=["GET"])
     def index(self):
         self.extra_js = []
@@ -19,7 +17,7 @@ class IndexView(AdminIndexView):
     @expose("/login/", methods=["GET", "POST"])
     def login_view(self):
         """Login view."""
-        self.extra_js = [self.bootstra_show_password_js]
+        self.extra_js = [url_for("static", filename="vendor/bootstrap-show-password/bootstrap-show-password.min.js")]
         form = LoginForm()
         if request.method == "POST" and form.validate_on_submit():
             username = form.username.data
@@ -42,7 +40,7 @@ class IndexView(AdminIndexView):
     @expose("/register/", methods=["GET", "POST"])
     def register_view(self):
         """Register view."""
-        self.extra_js = [self.bootstra_show_password_js]
+        self.extra_js = [url_for("static", filename="vendor/bootstrap-show-password/bootstrap-show-password.min.js")]
         form = RegisterForm()
         if request.method == "POST" and form.validate_on_submit():
             username = form.username.data

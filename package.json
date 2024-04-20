@@ -1,0 +1,12 @@
+{
+    "name": "learning-english-app",
+    "version": "0.1.0",
+    "description": "learning-english-app",
+    "scripts": {
+        "copy-files": "scripts/copy_fe_dependencies.sh"
+    },
+    "dependencies": {
+        "bootstrap-show-password": "^1.3.0",
+        "htmx.org": "1.9.12"
+    }
+}

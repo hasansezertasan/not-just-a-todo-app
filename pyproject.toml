@@ -225,3 +225,12 @@ format_css = true
 format_js = true
 extension = ".html"
 ignore = "H016,H023,H030,H031"
+
+[tool.poe.tasks]
+run = "flask run"
+
+[tool.poe.tasks.install-vendor]
+shell = "scripts/install-vendor.sh"
+
+[tool.poe.tasks.copy-vendor]
+shell = "scripts/copy-vendor.sh"

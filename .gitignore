@@ -167,3 +167,9 @@ cython_debug/
 
 # Ruff
 .ruff_cache/
+
+# Custom
+node_modules/
+package-lock.json
+src/static/vendor/htmx
+src/static/vendor/bootstrap-show-password
