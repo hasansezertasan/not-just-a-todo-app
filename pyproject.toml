@@ -6,7 +6,6 @@ authors = ["hasansezertasan <hasansezertasan@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 maintainers = ["hasansezertasan <hasansezertasan@gmail.com>"]
-classifiers = ["Private :: Do not Upload"]
 package-mode = false
 
 
