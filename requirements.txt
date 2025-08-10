@@ -1,4 +1,4 @@
-python-dotenv==1.0.0
+python-dotenv==1.1.1
 bcrypt==4.1.2
 sqlalchemy-utils[email,password]==0.41.1
 sqlalchemy-mixins==2.0.5
