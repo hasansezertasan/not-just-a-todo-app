@@ -3,7 +3,7 @@ bcrypt==4.1.2
 sqlalchemy-utils[email,password]==0.41.1
 sqlalchemy-mixins==2.0.5
 alembic==1.13.1
-Flask==3.0.0
+Flask==3.1.2
 Flask-Admin==1.6.1
 Flask-WTF[email]==1.2.1
 Flask-Login==0.6.3
