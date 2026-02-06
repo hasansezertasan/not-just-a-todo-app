@@ -12,7 +12,7 @@ package-mode = false
 [tool.poetry.dependencies]
 python = ">=3.8, <4.0"
 bcrypt = "^4.1.2"
-SQLAlchemy-Utils = { extras = ["email", "password"], version = "^0.41.2" }
+SQLAlchemy-Utils = { extras = ["email", "password"], version = "^0.42.0" }
 SQLAlchemy-Mixins = "^2.0.5"
 Flask = "^3.0.0"
 Flask-Admin = "^1.6.1"
