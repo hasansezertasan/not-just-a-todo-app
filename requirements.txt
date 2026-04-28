@@ -4,7 +4,7 @@ sqlalchemy-utils[email,password]==0.42.1
 sqlalchemy-mixins==2.0.5
 alembic==1.18.4
 Flask==3.1.3
-Flask-Admin==2.0.2
+Flask-Admin==2.1.0
 Flask-WTF[email]==1.3.0
 Flask-Login==0.6.3
 Flask-SQLAlchemy==3.1.1
