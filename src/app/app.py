@@ -1,18 +1,17 @@
 # Copyright 2024 Hasan Sezer Taşan <hasansezertasan@gmail.com>
-# Copyright (C) 2024 <hasansezertasan@gmail.com>
 from flask import Flask
 from flask_bootstrap import Bootstrap4
 from flask_login import LoginManager
 from flask_migrate import Migrate
 
-from src.config import FlaskConfig
-from src.db import User, db
-
-from . import commands
-from .admin import admin
+from app import commands
+from app.admin import admin
+from app.config import FlaskConfig
+from app.db.models.base import db
+from app.db.models.users import User
 
 app = Flask(__name__)
-app.config.from_object(FlaskConfig)
+app.config.from_object(FlaskConfig)  # Update app configuration with FlaskConfig class.
 login_manager = LoginManager()
 migrate = Migrate()
 bootstrap = Bootstrap4(app)

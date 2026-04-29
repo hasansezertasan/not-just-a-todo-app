@@ -1,11 +1,10 @@
 # Copyright 2024 Hasan Sezer Taşan <hasansezertasan@gmail.com>
-# Copyright (C) 2024 <hasansezertasan@gmail.com>
 from flask import flash, redirect, request, url_for
 from flask_admin import AdminIndexView, expose
 from flask_login import login_user, logout_user
 
-from src.db import User
-from src.forms import LoginForm, RegisterForm
+from app.db.models.users import User
+from app.forms import LoginForm, RegisterForm
 
 
 class IndexView(AdminIndexView):
@@ -21,7 +20,7 @@ class IndexView(AdminIndexView):
             url_for(
                 "static",
                 filename="vendor/bootstrap-show-password/bootstrap-show-password.min.js",
-            )
+            ),
         ]
         form = LoginForm()
         if request.method == "POST" and form.validate_on_submit():
@@ -49,7 +48,7 @@ class IndexView(AdminIndexView):
             url_for(
                 "static",
                 filename="vendor/bootstrap-show-password/bootstrap-show-password.min.js",
-            )
+            ),
         ]
         form = RegisterForm()
         if request.method == "POST" and form.validate_on_submit():
@@ -71,5 +70,5 @@ class IndexView(AdminIndexView):
             return redirect(url_for(".login_view"))
         return self.render(template="admin/form-page.html", form=form)
 
-    def is_visible(self):
+    def is_visible(self) -> bool:
         return False
