@@ -1,4 +1,5 @@
 # Copyright 2024 Hasan Sezer Taşan <hasansezertasan@gmail.com>
+from __future__ import annotations
 
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import (

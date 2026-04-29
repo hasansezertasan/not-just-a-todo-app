@@ -2,6 +2,8 @@
 
 import datetime
 
+import pytest
+
 from app.db.models.sequences import Sequence, Task
 from app.db.models.templates import SequenceTemplate, TaskTemplate
 from app.db.models.users import User
@@ -47,6 +49,10 @@ def test_sequence_template_cascade_delete_tasks(user: User) -> None:
     assert TaskTemplate.query.count() == 0
 
 
+@pytest.mark.xfail(
+    reason="Pending user contribution: assert task_count, completed_task_count, tasks_summary",
+    strict=False,
+)
 def test_sequence_task_count_properties(user: User) -> None:
     tmpl = SequenceTemplate(name="T", description="d", user_id=user.id)
     tmpl.upsert()

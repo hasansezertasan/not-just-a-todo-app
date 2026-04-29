@@ -20,5 +20,6 @@ def test_login_page(client: FlaskClient) -> None:
 
 
 def test_protected_route_redirects(client: FlaskClient) -> None:
-    resp = client.get("/sequences/", follow_redirects=False)
-    assert resp.status_code in (302, 401, 403, 404)
+    resp = client.get("/sequence/", follow_redirects=False)
+    assert resp.status_code == 302
+    assert "/admin/login" in resp.headers["Location"]
