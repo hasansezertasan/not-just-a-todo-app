@@ -1,5 +1,4 @@
 # Copyright 2024 Hasan Sezer Taşan <hasansezertasan@gmail.com>
-# Copyright (C) 2024 <hasansezertasan@gmail.com>
 import datetime
 
 from flask import redirect, url_for
@@ -9,9 +8,8 @@ from flask_login import current_user
 from markupsafe import Markup
 from wtforms import TextAreaField
 
-from src.db import Sequence, SequenceTemplate, Task, TaskTemplate
-
-from .mixins import MemberMixin, MemberPropertyMixin, ModelViewMixin
+from app.db.models import Sequence, SequenceTemplate, Task, TaskTemplate
+from app.views.mixins import MemberMixin, MemberPropertyMixin, ModelViewMixin
 
 
 class SequenceTemplateView(MemberMixin, MemberPropertyMixin, ModelViewMixin):
@@ -38,25 +36,25 @@ class SequenceTemplateView(MemberMixin, MemberPropertyMixin, ModelViewMixin):
         SequenceTemplate.name,
         SequenceTemplate.description,
     ]
-    form_overrides = dict(
-        description=TextAreaField,
-    )
+    form_overrides = {
+        "description": TextAreaField,
+    }
     inline_models = [
         (
             TaskTemplate,
-            dict(
-                form_columns=[
+            {
+                "form_columns": [
                     TaskTemplate.id,
                     TaskTemplate.name,
                     TaskTemplate.description,
                 ],
-            ),
-        )
+            },
+        ),
     ]
     column_formatters = {
         "task_count": lambda v, c, m, p: len(m.tasks),
         "tasks": lambda v, c, m, p: Markup(
-            "<br>".join([task.name for task in m.tasks])
+            "<br>".join([task.name for task in m.tasks]),
         ),
     }
     column_extra_row_actions = [
@@ -65,10 +63,10 @@ class SequenceTemplateView(MemberMixin, MemberPropertyMixin, ModelViewMixin):
             "sequence-template.populate",
             title="Populate",
             id_arg="id",
-        )
+        ),
     ]
 
-    def on_model_change(self, form, model: SequenceTemplate, is_created: bool):
+    def on_model_change(self, form, model: SequenceTemplate, is_created: bool) -> None:
         if is_created:
             model.user_id = current_user.id
             for idx, _ in enumerate(model.tasks):
@@ -140,7 +138,7 @@ class SequenceView(MemberMixin, MemberPropertyMixin, ModelViewMixin):
         return self.render("admin/sequence-progress.html", sequence=sequence)
 
     @expose("/progress/<int:_id>/task/<int:task_id>/complete", methods=["GET"])
-    def complete(self, _id, task_id):
+    def complete(self, _id: int, task_id: int):
         utcnow = datetime.datetime.utcnow()
         task = Task.query.filter(Task.id == task_id).first()
         task.date_completed = utcnow

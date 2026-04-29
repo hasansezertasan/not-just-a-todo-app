@@ -1,12 +1,10 @@
 # Copyright 2024 Hasan Sezer Taşan <hasansezertasan@gmail.com>
-# Copyright (C) 2024 <hasansezertasan@gmail.com>
 from flask import flash, redirect, request, url_for
 from flask_admin import BaseView, expose
 from flask_login import current_user, logout_user
 
-from src.forms import ChangePasswordForm, EditProfileForm
-
-from .mixins import InvisibleMixin, MemberMixin
+from app.forms import ChangePasswordForm, EditProfileForm
+from app.views.mixins import InvisibleMixin, MemberMixin
 
 
 class EditProfileView(MemberMixin, InvisibleMixin, BaseView):
@@ -24,7 +22,7 @@ class EditProfileView(MemberMixin, InvisibleMixin, BaseView):
 
 class ChangePasswordView(MemberMixin, InvisibleMixin, BaseView):
     extra_js = [
-        "https://unpkg.com/bootstrap-show-password@1.2.1/dist/bootstrap-show-password.min.js"
+        "https://unpkg.com/bootstrap-show-password@1.2.1/dist/bootstrap-show-password.min.js",
     ]
 
     @expose("/", methods=["GET", "POST"])

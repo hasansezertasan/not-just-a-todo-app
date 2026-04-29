@@ -1,5 +1,4 @@
 # Copyright 2024 Hasan Sezer Taşan <hasansezertasan@gmail.com>
-# Copyright (C) 2024 <hasansezertasan@gmail.com>
 from flask import redirect, url_for
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user
@@ -22,7 +21,7 @@ class MemberPropertyMixin(ModelView):
 
 
 class AnonymousMixin:
-    def is_accessible(self):
+    def is_accessible(self) -> bool:
         return not current_user.is_authenticated
 
     def inaccessible_callback(self, name, **kwargs):
@@ -30,7 +29,7 @@ class AnonymousMixin:
 
 
 class InvisibleMixin:
-    def is_visible(self):
+    def is_visible(self) -> bool:
         return False
 
 

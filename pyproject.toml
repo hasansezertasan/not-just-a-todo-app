@@ -1,221 +1,132 @@
-[tool.poetry]
-name = "not just a todo app"
+[project]
+name = "app"
 version = "0.1.0"
-description = "This is not just a Todo App!"
-authors = ["hasansezertasan <hasansezertasan@gmail.com>"]
-license = "MIT"
+description = "This is not just a TODO App!"
 readme = "README.md"
-maintainers = ["hasansezertasan <hasansezertasan@gmail.com>"]
-package-mode = false
+license = { text = "MIT" }
+authors = [{ name = "Hasan Sezer Taşan", email = "hasansezertasan@gmail.com" }]
+maintainers = [
+  { name = "Hasan Sezer Taşan", email = "hasansezertasan@gmail.com" },
+]
+requires-python = ">=3.10"
+dependencies = [
+  "bcrypt==5.0.0",
+  "SQLAlchemy-Utils[password]==0.42.1",
+  "SQLAlchemy-Mixins==2.0.5",
+  "Flask==3.1.3",
+  "Flask-Admin==2.1.0",
+  "Flask-WTF[email]==1.3.0",
+  "Flask-Login==0.6.3",
+  "Flask-Security-Too==5.8.0",
+  "Flask-SQLAlchemy==3.1.1",
+  "Flask-Migrate==4.1.0",
+  "Bootstrap-Flask==2.5.0",
+  "pydantic-settings>=2.13.1",
+]
 
 
-[tool.poetry.dependencies]
-python = ">=3.8, <4.0"
-bcrypt = "^4.1.2"
-SQLAlchemy-Utils = { extras = ["email", "password"], version = "^0.41.2" }
-SQLAlchemy-Mixins = "^2.0.5"
-Flask = "^3.0.0"
-Flask-Admin = "^1.6.1"
-Flask-WTF = { extras = ["email"], version = "^1.2.1" }
-Flask-Login = "^0.6.3"
-Flask-Security-Too = "^5.4.3"
-Flask-SQLAlchemy = "^3.1.1"
-Flask-Migrate = "^4.0.7"
-Bootstrap-Flask = "^2.4.0"
-
-
-[tool.poetry.group.dev.dependencies]
-ipykernel = "^6.29.4"
-mypy = "^1.8.0"
-djlint = "^1.34.1"
-ruff = "^0.4.1"
-pre-commit = ">=2.20.0, <4.0.0"
-
-
-[tool.poetry.group.test.dependencies]
-pytest = "^7.4.3"
+[dependency-groups]
+dev = [
+  "tox==4.53.0",
+  "tox-uv==1.35.1",
+  { include-group = "lint" },
+  { include-group = "test" },
+]
+lint = [
+  "pylint==4.0.5",
+  "mypy==1.20.2",
+  "pyright==1.1.409",
+  "ty==0.0.33",
+  "slotscheck==0.19.1",
+]
+test = [
+  "coverage-enable-subprocess==1.0",
+  "coverage[toml]~=7.4",
+  "pytest-asyncio>=1.3.0",
+  "pytest-dependency>=0.6.1",
+  "pytest-mock~=3.12",
+  "pytest-playwright>=0.5.2",
+  "pytest-rerunfailures~=16.1",
+  "pytest-xdist[psutil]~=3.5",
+  "syrupy>=4.7.0",
+  "pytest~=9.0.2",
+  "uvicorn>0.27.0",
+  "httpx>=0.28.1",
+]
 
 
 [tool.ruff]
-# Exclude a variety of commonly ignored directories.
-exclude = [
-  ".bzr",
-  ".direnv",
-  ".eggs",
-  ".git",
-  ".git-rewrite",
-  ".hg",
-  ".ipynb_checkpoints",
-  ".mypy_cache",
-  ".nox",
-  ".pants.d",
-  ".pyenv",
-  ".pytest_cache",
-  ".pytype",
-  ".ruff_cache",
-  ".svn",
-  ".tox",
-  ".venv",
-  ".vscode",
-  "__pypackages__",
-  "_build",
-  "buck-out",
-  "build",
-  "dist",
-  "node_modules",
-  "site-packages",
-  "venv",
-  "alembic",
-  "migrations",
-]
-
-# Same as Black.
-line-length = 88
-indent-width = 4
-
-# Assume Python 3.8
-target-version = "py38"
-
-# Extra
-show-fixes = true
-extend-include = ["*.ipynb"]
+extend-exclude = ["alembic", "migrations"]
 fix = true
+output-format = "full"
+preview = true
+show-fixes = true
+target-version = "py310"
+unsafe-fixes = true
+
+
+[tool.ruff.analyze]
+detect-string-imports = true
+
+
+[tool.ruff.format]
+docstring-code-format = true
+line-ending = "lf"
+preview = true
 
 
 [tool.ruff.lint]
 # Run `ruff linter` command to see all available linters and their descriptions
-select = [
-  # All Available Linters
-  "F", # Pyflakes
-  # "E/W", # pycodestyle
-  # Custom Start
-  "E",  # pycodestyle errors
-  "E4",
-  "E7",
-  "E9",
-  "W",  # pycodestyle warnings
-  # Custom End
-  "C90", # mccabe
-  "I",   # isort
-  # "N",   # pep8-naming
-  # "D", # pydocstyle
-  "UP",  # pyupgrade
-  "YTT", # flake8-2020
-  # "ANN", # flake8-annotations
-  # "ASYN", #C flake8-async
-  # "TRIO", # flake8-trio
-  # "S", # flake8-bandit
-  "BLE", # flake8-blind-except
-  # "FBT", # flake8-boolean-trap
-  "B", # flake8-bugbear
-  # Custom Start
-  "B9",
-  # Custom End
-  "A", # flake8-builtins
-  # "COM", # flake8-commas
-  "CPY", # flake8-copyright
-  # "C4",  # flake8-comprehensions
-  # Custom Start
-  # "C", # flake8-comprehensions
-  # Custom End
-  # "DTZ", # flake8-datetimez
-  "T10", # flake8-debugger
-  "DJ",  # flake8-django
-  "EM",  # flake8-errmsg
-  "EXE", # flake8-executable
-  # "FA", # flake8-future-annotations
-  # "ISC", # flake8-implicit-str-concat
-  "ICN", # flake8-import-conventions
-  "G",   # flake8-logging-format
-  "INP", # flake8-no-pep420
-  "PIE", # flake8-pie
-  "T20", # flake8-print
-  "PYI", # flake8-pyi
-  "PT",  # flake8-pytest-style
-  "Q",   # flake8-quotes
-  "RSE", # flake8-raise
-  "RET", # flake8-return
-  # "SLF",  # flake8-self
-  "SLOT", # flake8-slots
-  "SIM",  # flake8-simplify
-  "TID",  # flake8-tidy-imports
-  "TCH",  # flake8-type-checking
-  "INT",  # flake8-gettext
-  # "ARG", # flake8-unused-arguments
-  "PTH", # flake8-use-pathlib
-  # "TD", # flake8-todos
-  # "FIX", # flake8-fixme
-  # "ERA", # eradicate
-  "PD", # pandas-vet
-  # "PGH", # pygrep-hooks
-  # "PL", # Pylint
-  "TRY",  # tryceratops
-  "FLY",  # flynt
-  "NPY",  # NumPy-specific rules
-  "AIR",  # Airflow
-  "PERF", # Perflint
-  "FURB", # refurb
-  "LOG",  # flake8-logging
-  # "RUF", # Ruff-specific rules
-]
-ignore = [
-  "A002", # Argument `id` is shadowing a Python builtin
-  # "B008", # do not perform function calls in argument defaults
-  # "C901", # too complex
-  "E501", # line too long, handled by black
-  "F401", # imported but unused
-  # "E402", # module level import not at top of file
-  "E712", # comparison to True should be 'if cond is True:' or 'if cond:'
-  "F821", # undefined name
-  # "W191", # indentation contains tabs
-  # "E101", # indentation contains mixed spaces and tabs
-  # "C408", # Unnecessary list comprehension - rewrite as a for loop
-]
-# Allow fix for all enabled rules (when `--fix`) is provided.
 fixable = ["ALL"]
-unfixable = []
-# Allow unused variables when underscore-prefixed.
-dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
-
-# Extra
+ignore = [
+  "A",
+  "D",
+  "DTZ",
+  "ANN",
+  "PLR",
+  "ARG",
+  "S",
+  "RUF",
+  "FBT",
+  "SLF",
+  "DOC",
+  "PLC",
+  "TD",
+  "FIX",
+  "PGH",
+  "PLW",
+  "COM812",
+]
+logger-objects = ["logging_setup.logger"]
 preview = true
-ignore-init-module-imports = true
+select = ["ALL"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*.py" = ['S101']
+
+
+[tool.ruff.lint.pyupgrade]
+keep-runtime-typing = true
+
+
+[tool.ruff.lint.pycodestyle]
+ignore-overlong-task-comments = true
 
 
 [tool.ruff.lint.flake8-copyright]
 author = "Hasan Sezer Taşan <hasansezertasan@gmail.com>"
 
 
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+
 [tool.ruff.lint.pydocstyle]
 convention = "google"
 
 
-[tool.ruff.format]
-# Like Black, use double quotes for strings.
-quote-style = "double"
-
-# Like Black, indent with spaces, rather than tabs.
-indent-style = "space"
-
-# Like Black, respect magic trailing commas.
-skip-magic-trailing-comma = false
-
-# Like Black, automatically detect the appropriate line ending.
-line-ending = "auto"
-
-# Enable auto-formatting of code examples in docstrings. Markdown,
-# reStructuredText code/literal blocks and doctests are all supported.
-#
-# This is currently disabled by default, but it is planned for this
-# to be opt-out in the future.
-docstring-code-format = true
-
-# Set the line length limit used when formatting code snippets in
-# docstrings.
-#
-# This only has an effect when the `docstring-code-format` setting is
-# enabled.
-docstring-code-line-length = "dynamic"
+[tool.ruff.lint.ruff]
+parenthesize-tuple-in-subscript = true
 
 
 [tool.djlint]
@@ -225,11 +136,19 @@ format_js = true
 extension = ".html"
 ignore = "H016,H023,H030,H031"
 
-[tool.poe.tasks]
-run = "flask run"
 
-[tool.poe.tasks.install-vendor]
-shell = "scripts/install-vendor.sh"
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-ra --strict-markers"
 
-[tool.poe.tasks.copy-vendor]
-shell = "scripts/copy-vendor.sh"
+
+[tool.coverage.run]
+source = ["src/app"]
+branch = true
+
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true

@@ -1,17 +1,18 @@
 # Copyright 2024 Hasan Sezer Taşan <hasansezertasan@gmail.com>
-# Copyright (C) 2024 <hasansezertasan@gmail.com>
 import json
 
 import click
 from flask.cli import with_appcontext
 
-from src.config import basedir
-from src.db import SequenceTemplate, TaskTemplate, User, db
+from app.config import basedir
+from app.db.models.base import db
+from app.db.models.templates import SequenceTemplate, TaskTemplate
+from app.db.models.users import User
 
 
 @click.command(help="Create database")
 @with_appcontext
-def create_database():
+def create_database() -> None:
     """Create database
 
     Usage:
@@ -29,7 +30,7 @@ def create_database():
     prompt="Do you really want to clear the database?",
 )
 @with_appcontext
-def clear_database(verify: bool = False):
+def clear_database(verify: bool = False) -> None:
     """Clear database
 
     Usage:
@@ -44,7 +45,7 @@ def clear_database(verify: bool = False):
 
 @click.command(help="Seed Users Table")
 @with_appcontext
-def seed_users_table():
+def seed_users_table() -> None:
     """Seed Users Table
 
     Usage:
@@ -62,7 +63,7 @@ def seed_users_table():
 
 @click.command(help="Seed Sequence Templates Table")
 @with_appcontext
-def seed_sequence_templates_table():
+def seed_sequence_templates_table() -> None:
     """Seed Sequence Templates Table
 
     Usage:

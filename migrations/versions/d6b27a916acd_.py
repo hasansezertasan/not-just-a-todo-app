@@ -1,4 +1,4 @@
-""" Initial Database Revision
+"""Initial Database Revision
 
 Revision ID: d6b27a916acd
 Revises:

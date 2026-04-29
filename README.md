@@ -17,6 +17,11 @@
     - [Sequence List View](#sequence-list-view)
     - [Sequence Progress Page](#sequence-progress-page)
   - [Features](#features)
+  - [How to Run](#how-to-run)
+    - [Prerequisites](#prerequisites)
+    - [Setup](#setup)
+    - [Database](#database)
+    - [Run](#run)
   - [About](#about)
   - [License](#license)
 
@@ -57,6 +62,53 @@
 - Complete tasks in Task Sequences
 - Login and Register
 - Change Password
+
+## How to Run
+
+### Prerequisites
+
+- [`mise`](https://mise.jdx.dev/) (recommended) — manages Python, `uv`, and Node versions
+- Or install manually: Python 3.x, [`uv`](https://docs.astral.sh/uv/), Node.js / `npm`
+
+### Setup
+
+Clone, then bootstrap tools, Python deps, and vendor assets:
+
+```bash
+mise install
+```
+
+Manual alternative:
+
+```bash
+uv sync --all-groups --all-extras
+npm install && npm run build
+```
+
+### Database
+
+Apply migrations:
+
+```bash
+uv run flask db upgrade
+```
+
+Optional — seed test data:
+
+```bash
+uv run flask seed-users-table
+uv run flask seed-sequence-templates-table
+```
+
+### Run
+
+```bash
+uv run flask run
+```
+
+App entry point: `src/app/app.py` (auto-discovered by Flask). Open <http://127.0.0.1:5000>.
+
+Alternatives: `mise run start` or `just serve`.
 
 ## About
 

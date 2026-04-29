@@ -1,26 +1,29 @@
 # Copyright 2024 Hasan Sezer Taşan <hasansezertasan@gmail.com>
-# Copyright (C) 2024 <hasansezertasan@gmail.com>
 from flask_admin import Admin
+from flask_admin.theme import Bootstrap4Theme
 
-from .db import Sequence, SequenceTemplate, db
-from .views import AboutView as AboutView
-from .views import ChangePasswordView as ChangePasswordView
-from .views import EditProfileView as EditProfileView
-from .views import IndexView as IndexView
-from .views import SequenceTemplateView as SequenceTemplateView
-from .views import SequenceView as SequenceView
+from app.db.models.base import db
+from app.db.models.sequences import Sequence
+from app.db.models.templates import SequenceTemplate
+from app.views import (
+    AboutView,
+    ChangePasswordView,
+    EditProfileView,
+    IndexView,
+    SequenceTemplateView,
+    SequenceView,
+)
 
 admin = Admin(
-    name="Not Just a Todo App",
+    name="Not Just a TODO App",
     index_view=IndexView(
         name="Home",
         url="/",
         category="Home",
         template="/admin/index.html",
     ),
-    template_mode="bootstrap4",
+    theme=Bootstrap4Theme(base_template="admin/master.html"),
     endpoint="admin",
-    base_template="admin/master.html",
 )
 admin.add_category(name="Home")
 admin.add_view(
@@ -28,37 +31,37 @@ admin.add_view(
         name="About",
         url="/about",
         endpoint="about",
-    )
+    ),
 )
 admin.add_view(
     EditProfileView(
         name="Edit Profile",
         url="/edit-profile",
         endpoint="edit-profile",
-    )
+    ),
 )
 admin.add_view(
     ChangePasswordView(
         name="Change Password",
         url="/change-password",
         endpoint="change-password",
-    )
+    ),
 )
 admin.add_view(
     SequenceTemplateView(
         model=SequenceTemplate,
-        session=db.session,
+        session=db,
         name="Sequence Templates",
         url="/sequence-template",
         endpoint="sequence-template",
-    )
+    ),
 )
 admin.add_view(
     SequenceView(
         model=Sequence,
-        session=db.session,
+        session=db,
         name="Sequences",
         url="/sequence",
         endpoint="sequence",
-    )
+    ),
 )
