@@ -36,7 +36,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-  "tox==4.53.0",
+  "tox==4.53.1",
   "tox-uv==1.35.1",
   { include-group = "lint" },
   { include-group = "test" },
