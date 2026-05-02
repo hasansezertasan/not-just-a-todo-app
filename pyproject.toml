@@ -45,7 +45,7 @@ lint = [
   "pylint==4.0.5",
   "mypy==1.20.2",
   "pyright==1.1.409",
-  "ty==0.0.33",
+  "ty==0.0.34",
   "slotscheck==0.19.1",
 ]
 test = [
