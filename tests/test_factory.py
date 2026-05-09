@@ -91,6 +91,18 @@ def test_development_loose_cookies() -> None:
     assert flask_config["PREFERRED_URL_SCHEME"] == "http"
 
 
+def test_sqlalchemy_echo_off_by_default() -> None:
+    settings = _settings()
+    assert settings.to_flask()["SQLALCHEMY_ECHO"] is False
+
+
+def test_sqlalchemy_echo_propagates_when_enabled() -> None:
+    """`SQLALCHEMY_ECHO=true` flows through Settings to app.config."""
+    settings = _settings(sqlalchemy_echo=True)
+    app = create_app(settings)
+    assert app.config["SQLALCHEMY_ECHO"] is True
+
+
 def test_extensions_init_app_called() -> None:
     """Bootstrap, db, migrate, admin, login_manager must all be bound to the app."""
     app = create_app(_settings())

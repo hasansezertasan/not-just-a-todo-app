@@ -32,6 +32,7 @@ class Settings(BaseSettings):
     db_pool_pre_ping: bool = True
     db_pool_size: int = Field(default=5, ge=1)
     db_pool_recycle_seconds: int = Field(default=3600, ge=0)
+    sqlalchemy_echo: bool = False
     metrics_enabled: bool = True
     otel_endpoint: str | None = None
     otel_service_name: str = "not-just-a-todo-app"
@@ -73,6 +74,7 @@ class Settings(BaseSettings):
             ),
             "SQLALCHEMY_DATABASE_URI": self.sqlalchemy_database_url,
             "SQLALCHEMY_TRACK_MODIFICATIONS": False,
+            "SQLALCHEMY_ECHO": self.sqlalchemy_echo,
             "SQLALCHEMY_ENGINE_OPTIONS": engine_options,
             "SESSION_COOKIE_HTTPONLY": True,
             "SESSION_COOKIE_SECURE": self.is_production,
