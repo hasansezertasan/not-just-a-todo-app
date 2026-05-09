@@ -1,0 +1,51 @@
+# VCS
+.git
+.gitignore
+.gitattributes
+.github
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.egg-info
+.venv
+.python-version
+.mypy_cache
+.pytest_cache
+.ruff_cache
+.tox
+.coverage
+.coverage.*
+htmlcov
+dist
+build
+
+# Node
+node_modules
+src/app/static/vendor
+
+# Editor / IDE
+.vscode
+.idea
+.DS_Store
+
+# Local data / secrets
+.env
+.env.local
+*.sqlite3
+*.db
+db.sqlite3
+instance
+
+# Docs / scaffolding
+assets
+tests
+TODO.md
+CLAUDE.md
+.superset
+.claude
+
+# mise / tooling
+.mise.toml.local

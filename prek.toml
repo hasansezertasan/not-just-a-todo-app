@@ -27,11 +27,11 @@ hooks = [
 ]
 [[repos]]
 repo = "https://github.com/crate-ci/typos"
-rev = "v1.45.1"
+rev = "v1.46.1"
 hooks = [{ id = "typos" }]
 [[repos]]
 repo = "https://github.com/python-jsonschema/check-jsonschema"
-rev = "0.37.1"
+rev = "0.37.2"
 hooks = [
   { id = "check-dependabot" },
   { id = "check-github-actions" },
@@ -61,7 +61,7 @@ rev = "4.1.0"
 hooks = [{ id = "sqlfluff-lint" }, { id = "sqlfluff-fix" }]
 [[repos]]
 repo = "https://github.com/astral-sh/uv-pre-commit"
-rev = "0.11.7"
+rev = "0.11.12"
 hooks = [{ id = "uv-lock" }]
 [[repos]]
 repo = "https://github.com/abravalheri/validate-pyproject"
@@ -74,16 +74,20 @@ hooks = [{ id = "ruff-check" }, { id = "ruff-format" }]
 [[repos]]
 repo = "https://github.com/jendrikseipp/vulture"
 rev = "v2.16"
-hooks = [{ id = "vulture" }]
+hooks = [{ id = "vulture", pass_filenames = false }]
+[[repos]]
+repo = "https://github.com/gitleaks/gitleaks"
+rev = "v8.21.2"
+hooks = [{ id = "gitleaks" }]
 [[repos]]
 repo = "https://github.com/DetachHead/basedpyright-prek-mirror"
 rev = "1.39.3"
-hooks = [{ id = "basedpyright", files = "^((apps|src|tests)/.*\\.py)$" }]
+hooks = [{ id = "basedpyright", files = "^((src|tests)/.*\\.py)$" }]
 [[repos]]
 repo = "https://github.com/facebook/pyrefly-pre-commit"
-rev = "0.62.0"
+rev = "0.64.1"
 hooks = [
-  { id = "pyrefly-check", pass_filenames = false, files = "^((apps|src|tests)/.*\\.py)$" },
+  { id = "pyrefly-check", pass_filenames = false, files = "^((src|tests)/.*\\.py)$" },
 ]
 [[repos]]
 repo = "https://github.com/PyCQA/bandit"
@@ -93,7 +97,6 @@ hooks = [
     "-c",
     "pyproject.toml",
     "-r",
-    "./apps",
     "./src",
     "./tests",
   ] },
@@ -104,7 +107,7 @@ rev = "v0.19.1"
 hooks = [
   { id = "slotscheck", args = [
     "--no-strict-imports",
-  ], files = "^((apps|src|tests)/.*\\.py)$" },
+  ], files = "^((src|tests)/.*\\.py)$" },
 ]
 [[repos]]
 repo = "https://github.com/pypa/pip-audit"

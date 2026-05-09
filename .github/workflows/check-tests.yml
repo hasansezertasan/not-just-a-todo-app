@@ -1,0 +1,24 @@
+---
+name: "Tests & Coverage"
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - name: Sync dependencies
+        run: uv sync --all-groups --frozen
+      - name: Install Playwright browsers
+        run: uv run playwright install --with-deps chromium
+      - name: Run tests with coverage
+        env:
+          SESSION_SECRET_KEY: ci-test-key
+        # Floor ratchets up only — never down. Current actual: ~73%.
+        # Bump this when sustained coverage exceeds the floor by 5+ points.
+        run: uv run pytest --cov=app --cov-report=term-missing --cov-fail-under=70

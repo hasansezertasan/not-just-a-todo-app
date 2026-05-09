@@ -1,0 +1,29 @@
+---
+name: Alembic Migration Check
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  migrations:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+      - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b  # v8.1.0
+        with:
+          enable-cache: true
+      - name: Sync dependencies
+        run: uv sync --no-dev --frozen
+      - name: Apply existing migrations to a fresh DB
+        env:
+          SESSION_SECRET_KEY: ci-test-key
+          SQLALCHEMY_DATABASE_URL: sqlite:///ci.sqlite3
+        run: uv run flask db upgrade
+      - name: Detect un-migrated model changes
+        env:
+          SESSION_SECRET_KEY: ci-test-key
+          SQLALCHEMY_DATABASE_URL: sqlite:///ci.sqlite3
+        # `flask db check` exits non-zero if the live schema diverges from
+        # the model definitions — i.e. someone changed a model without
+        # generating a migration.
+        run: uv run flask db check

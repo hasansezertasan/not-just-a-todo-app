@@ -1,0 +1,83 @@
+[
+    {
+        "email": "hasansezertasan@gmail.com",
+        "first_name": "Hasan Sezer",
+        "is_active": true,
+        "is_superuser": true,
+        "last_name": "Taşan",
+        "password": "hasansezertasan",
+        "username": "hasansezertasan"
+    },
+    {
+        "email": "richardhendricks@piedpiper.com",
+        "first_name": "richard",
+        "is_active": true,
+        "is_superuser": true,
+        "last_name": "hendricks",
+        "password": "richardhendricks",
+        "username": "richardhendricks"
+    },
+    {
+        "email": "dineshchugtai@nothotdog.com",
+        "first_name": "Dinesh",
+        "is_active": true,
+        "is_superuser": true,
+        "last_name": "Chugtai",
+        "password": "goldenchain",
+        "username": "dineshchugtai"
+    },
+    {
+        "email": "gilfoyle@bertram.xyz",
+        "first_name": "Gilfoyle",
+        "is_active": false,
+        "is_superuser": true,
+        "last_name": "Bertram",
+        "password": "sonofanton",
+        "username": "gilfoyle"
+    },
+    {
+        "email": "jareddunn@piedpiper.com",
+        "first_name": "Jared",
+        "is_active": true,
+        "is_superuser": true,
+        "last_name": "Dunn",
+        "password": "jared",
+        "username": "jared"
+    },
+    {
+        "email": "erlichbachman@aviato.com",
+        "first_name": "Erlich",
+        "is_active": true,
+        "is_superuser": true,
+        "last_name": "Bachman",
+        "password": "erlichbachman",
+        "username": "erlichbachman"
+    },
+    {
+        "email": "bighead@hotmail.com",
+        "first_name": "Nelson",
+        "is_active": true,
+        "is_superuser": true,
+        "last_name": "Bighetti",
+        "password": "password",
+        "username": "password"
+    },
+    {
+        "email": "gavin@holi.com",
+        "first_name": "Gavin",
+        "is_active": true,
+        "is_superuser": true,
+        "last_name": "Belson",
+        "password": "gavinbelson",
+        "username": "gavinbelson"
+    },
+    {
+        "email": "peter@raviga.com",
+        "first_name": "Peter",
+        "is_active": true,
+        "is_superuser": true,
+        "last_name": "Gregory",
+        "password": "petergregory",
+        "username": "petergregory"
+    }
+]

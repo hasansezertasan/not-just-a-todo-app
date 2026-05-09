@@ -2,8 +2,6 @@
 
 import datetime
 
-import pytest
-
 from app.db.models.sequences import Sequence, Task
 from app.db.models.templates import SequenceTemplate, TaskTemplate
 from app.db.models.users import User
@@ -16,6 +14,30 @@ def test_user_full_name_column_property(user: User) -> None:
 def test_user_password_is_hashed(user: User) -> None:
     assert user.hashed_password == "s3cret-pw"
     assert str(user.hashed_password) != "s3cret-pw"
+
+
+def test_user_password_uses_argon2(user: User) -> None:
+    """Newly-hashed passwords must use argon2 (the configured primary scheme)."""
+    raw = user.hashed_password.hash.decode()
+    # passlib argon2 hashes start with `$argon2id$` (or `$argon2i$`/`$argon2d$`).
+    assert raw.startswith("$argon2"), f"expected argon2 hash, got: {raw[:20]}"
+
+
+def test_password_context_accepts_both_schemes(db: object) -> None:
+    """The PasswordType column type is configured for argon2 + bcrypt verification.
+
+    Inserting raw bcrypt hashes via `User(...)` triggers PasswordType's auto-
+    hash (primary scheme), so we test the underlying CryptContext directly —
+    that's what determines whether legacy rows verify in production.
+    """
+    from app.db.models.users import User as _User
+
+    column_type = _User.__table__.c.hashed_password.type
+    schemes = column_type.context.schemes()
+    assert "argon2" in schemes
+    assert "bcrypt" in schemes
+    # argon2 is first → new hashes use argon2; bcrypt second → legacy verifies.
+    assert schemes[0] == "argon2"
 
 
 def test_user_find_by_id(user: User) -> None:
@@ -49,10 +71,6 @@ def test_sequence_template_cascade_delete_tasks(user: User) -> None:
     assert TaskTemplate.query.count() == 0
 
 
-@pytest.mark.xfail(
-    reason="Pending user contribution: assert task_count, completed_task_count, tasks_summary",
-    strict=False,
-)
 def test_sequence_task_count_properties(user: User) -> None:
     tmpl = SequenceTemplate(name="T", description="d", user_id=user.id)
     tmpl.upsert()
@@ -68,7 +86,7 @@ def test_sequence_task_count_properties(user: User) -> None:
         description="d",
         sequence_id=seq.id,
         user_id=user.id,
-        date_completed=datetime.datetime.utcnow(),
+        date_completed=datetime.datetime.now(datetime.UTC),
     ).upsert()
     Task(
         name="t2",
@@ -78,9 +96,17 @@ def test_sequence_task_count_properties(user: User) -> None:
         date_completed=None,
     ).upsert()
 
-    # TODO(user): assert correct values for task_count, completed_task_count,
-    # and tasks_summary on `seq`. Trade-off: do you want to assert exact
-    # emoji strings in tasks_summary (brittle if UI changes) or just count
-    # ✔️/❌ occurrences (resilient)? Implement 3-4 assertions below.
-    msg = "user contribution: see TODO above"
-    raise NotImplementedError(msg)
+    # Reload to pick up the freshly-inserted tasks via the relationship.
+    seq = Sequence.find_by_id(seq.id)
+
+    assert seq.task_count == 2
+    assert seq.completed_task_count == 1
+
+    summary = seq.tasks_summary
+    assert len(summary) == 2
+    completed_marker = sum("✔️" in line for line in summary)
+    pending_marker = sum("❌" in line for line in summary)
+    assert completed_marker == 1
+    assert pending_marker == 1
+    assert any("t1" in line for line in summary)
+    assert any("t2" in line for line in summary)

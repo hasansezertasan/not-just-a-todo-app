@@ -57,32 +57,43 @@
 
 ## Features
 
+**Application:**
+
 - Create Task Sequences as Templates
 - Instantiate Task Sequences
 - Complete tasks in Task Sequences
 - Login and Register
 - Change Password
 
+**Production hardening:**
+
+- Application factory (`create_app()`), instance-relative config, lazy extension init
+- Argon2 password hashing (bcrypt verified for legacy rows)
+- CSRF protection, secure-cookie defaults, ProxyFix, strong session protection
+- Rate-limiting (Flask-Limiter) + per-account lockout after N failed logins
+- `/healthz` + `/livez` (liveness) and `/readyz` (readiness, checks DB) — all `Cache-Control: no-store`, accept HEAD
+- `/metrics` (Prometheus) — request count, latency histograms
+- Structured JSON logging (request_id auto-bound) with `LOG_FORMAT=text` fallback for local dev
+- Sentry + OpenTelemetry integration (env-gated)
+- Gzip/brotli response compression (Flask-Compress) + content-hashed static URLs (Flask-Static-Digest)
+- Multi-stage Dockerfile (Bun → uv → slim runtime), non-root user, OCI labels, `HEALTHCHECK`
+
 ## How to Run
 
 ### Prerequisites
 
-- [`mise`](https://mise.jdx.dev/) (recommended) — manages Python, `uv`, and Node versions
-- Or install manually: Python 3.x, [`uv`](https://docs.astral.sh/uv/), Node.js / `npm`
+- [`mise`](https://mise.jdx.dev/) (recommended) — manages Python, `uv`, and `bun` versions
+- Or install manually: Python 3.x, [`uv`](https://docs.astral.sh/uv/), [`bun`](https://bun.sh/)
 
 ### Setup
 
-Clone, then bootstrap tools, Python deps, and vendor assets:
+`mise install` only installs the tool versions in `mise.toml` (uv, bun,
+ruff, prek). Project deps are installed separately:
 
 ```bash
-mise install
-```
-
-Manual alternative:
-
-```bash
-uv sync --all-groups --all-extras
-npm install && npm run build
+mise install                              # tools (uv, bun, ruff, prek)
+uv sync --all-groups --all-extras         # Python deps
+bun install && ./tools/copy-vendor-assets.sh     # frontend deps + vendor copy
 ```
 
 ### Database
@@ -96,8 +107,8 @@ uv run flask db upgrade
 Optional — seed test data:
 
 ```bash
-uv run flask seed-users-table
-uv run flask seed-sequence-templates-table
+uv run flask seed users
+uv run flask seed sequences
 ```
 
 ### Run
@@ -106,9 +117,37 @@ uv run flask seed-sequence-templates-table
 uv run flask run
 ```
 
-App entry point: `src/app/app.py` (auto-discovered by Flask). Open <http://127.0.0.1:5000>.
+App entry point: `src/app/wsgi.py` (auto-discovered by Flask). Open <http://127.0.0.1:5000>.
 
-Alternatives: `mise run start` or `just serve`.
+### Docker
+
+```bash
+docker compose up --build
+```
+
+Image runs `gunicorn` on port 8000 with the config at `gunicorn.conf.py`.
+Healthcheck probes `/readyz`. Persistent state (SQLite DB) lives in the
+`app-instance` volume mounted at `/app/instance`.
+
+### Architecture
+
+```
+src/app/
+  factory.py    # create_app() — wires extensions, middleware, CLI
+  wsgi.py       # gunicorn entrypoint — `app = create_app()`
+  config.py     # pydantic Settings (loads .env, validates)
+  extensions.py # module-level singletons (db, login_manager, ...)
+  middleware.py # request-id, security headers, error handlers
+  admin.py      # Flask-Admin instance + add_view registrations
+  views/        # Flask-Admin view classes (no @app.route)
+  services/    # Domain operations — HTTP-free, unit-testable
+  db/
+    models/     # SQLAlchemy 2 models
+    migrations/ # Alembic / Flask-Migrate
+    fixtures/   # Seed data (JSON)
+```
+
+See `.env.example` for the full set of supported environment variables.
 
 ## About
 

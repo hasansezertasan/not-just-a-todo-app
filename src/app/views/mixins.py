@@ -8,7 +8,7 @@ class MemberMixin:
     def is_accessible(self):
         return current_user.is_authenticated
 
-    def inaccessible_callback(self, name, **kwargs):
+    def inaccessible_callback(self, name, **_kwargs):
         return redirect(url_for(self.admin.endpoint + ".login_view"))
 
 
@@ -24,7 +24,7 @@ class AnonymousMixin:
     def is_accessible(self) -> bool:
         return not current_user.is_authenticated
 
-    def inaccessible_callback(self, name, **kwargs):
+    def inaccessible_callback(self, name, **_kwargs):
         return redirect(url_for(self.admin.endpoint + ".index"))
 
 

@@ -21,23 +21,32 @@ The app uses a Template-Instance pattern for sequences:
 
 ```
 src/app/
-  ├── models/          # Database models (SQLAlchemy with SQLAlchemy-Mixins)
-  │   ├── sequences.py # Sequence and Task (instances)
-  │   ├── templates.py # SequenceTemplate and TaskTemplate (blueprints)
-  │   ├── users.py     # User model
-  │   └── mixins.py    # Shared model mixins
-  ├── views/           # Flask-Admin view classes (not traditional routes!)
-  │   ├── index.py     # Home page with login/register
-  │   ├── sequences.py # Sequence and template CRUD views
-  │   ├── profile.py   # User profile and password management
-  │   ├── about.py     # About page
-  │   └── mixins.py    # View mixins for common functionality
-  ├── admin.py         # Flask-Admin configuration and view registration
-  ├── app.py           # App factory and extension initialization
-  ├── config.py        # Flask configuration
-  ├── db.py            # Database setup (Base model with AllFeaturesMixin)
-  ├── forms.py         # WTForms form classes
-  └── commands.py      # Flask CLI commands
+  ├── db/
+  │   ├── models/         # SQLAlchemy 2 models (Mapped[...] + AllFeaturesMixin)
+  │   │   ├── base.py     # `db = SQLAlchemy()` + `Base(db.Model, AllFeaturesMixin)`
+  │   │   ├── sequences.py
+  │   │   ├── templates.py
+  │   │   ├── users.py
+  │   │   └── mixins.py
+  │   ├── migrations/     # Alembic / Flask-Migrate (compare_type=True)
+  │   └── fixtures/       # Seed data: users.json, sequences.json
+  ├── views/              # Flask-Admin view classes (not @app.route!)
+  │   ├── index.py        # Home + login + register
+  │   ├── sequences.py    # Sequence / template CRUD
+  │   ├── profile.py      # User profile + password mgmt
+  │   ├── about.py
+  │   └── mixins.py       # MemberMixin / AnonymousMixin / ModelViewMixin
+  ├── services/           # Domain operations (HTTP-free, unit-testable)
+  │   └── sequences.py
+  ├── admin.py            # Flask-Admin instance + add_view registrations
+  ├── factory.py          # `create_app()` — wires extensions, middleware, CLI
+  ├── wsgi.py             # Minimal `app = create_app()` for gunicorn
+  ├── __main__.py         # `python -m app` dev-server entry
+  ├── extensions.py       # Module-level singletons (db, login_manager, ...)
+  ├── middleware.py       # request-id, security headers, error handlers
+  ├── config.py           # Pydantic `Settings` (loads .env, validates)
+  ├── forms.py            # WTForms classes
+  └── commands.py         # Flask CLI commands (seed-*-table)
 ```
 
 ### Technology Stack
@@ -54,26 +63,25 @@ src/app/
 
 ### Tool Ecosystem
 
-This project uses **multiple task runners** for different purposes:
-- **`just`** (Justfile) - Primary task runner for common workflows
-- **`mise`** (mise.toml) - Tool version management and environment setup
-- **`npm`** (package.json) - Frontend asset management
+- **`mise`** (`mise.toml`) — primary task runner, tool version management, environment setup
+- **`uv`** — Python package manager
+- **`bun`** (`package.json`) — frontend asset management
 
 ### Environment Setup
 
 ```bash
-# Quick start with mise (recommended - handles everything)
-mise install  # Installs tools, Python deps, npm deps, and copies vendor files
+# 1. Tools (uv, bun, ruff, prek)
+mise install
 
-# Or manually with just
-just install  # Install Python dependencies only
-just fresh    # Clean + install Python dependencies
-
-# Or with uv directly
+# 2. Python deps
 uv sync --all-groups --all-extras
+
+# 3. Frontend deps + vendor asset copy
+bun install && ./tools/copy-vendor-assets.sh
 ```
 
-**Recommended workflow**: Use `mise install` for initial setup, then use `just` commands for daily development.
+**Note**: `mise install` only installs the tools listed in `mise.toml`; it
+does not chain into Python/frontend dep installs.
 
 ### Database
 
@@ -85,59 +93,47 @@ flask db upgrade
 flask db migrate -m "description"
 
 # Seed database with test data
-flask create-database
-flask seed-users-table
-flask seed-sequence-templates-table
-
-# Clear database (with confirmation)
-flask clear-database
+flask seed users
+flask seed sequences
 ```
 
 ### Running the App
 
 ```bash
-# Run development server (using Flask's built-in server)
-flask run
-
-# Or with uv
 uv run flask run
-
-# Or with mise (if using mise)
-mise run start
-
-# Or with just
-just serve
 ```
 
-**Note**: Flask auto-discovers the app from `src/app/app.py` (the `app` variable). The app entry point is at `src/app/app.py:13`.
+**Note**: WSGI entry point is `src/app/wsgi.py` exposing `app = create_app()` from `src/app/factory.py`.
 
 ### Testing & Quality
 
 ```bash
 # Run tests
-just test
+uv run pytest
 
-# Run tests with coverage
-just cov
+# With coverage
+uv run pytest --cov
 
-# Lint code
-just lint
+# Lint
+uv run ruff check
 
-# Type checking
-just typing
+# Format
+uv run ruff format
 
-# All checks
-just check-all
+# All checks (lint + tests + type + dead code)
+prek run --all-files
 ```
 
 ### Pre-commit
 
+This project uses [`prek`](https://github.com/j178/prek) (Rust port of pre-commit, installed via `mise`).
+
 ```bash
-# Install pre-commit hooks
-pre-commit install
+# Install hooks
+prek install
 
 # Run manually
-pre-commit run --all-files
+prek run --all-files
 ```
 
 ### Documentation & Utilities
@@ -203,31 +199,26 @@ admin.add_view(
 
 ### Configuration
 
-Environment variables (defined in `FlaskConfig`):
+Configuration is a Pydantic `Settings` model in `src/app/config.py`. It auto-
+loads `.env`, validates types, and `Settings.to_flask()` produces the dict
+passed to `app.config.from_mapping(...)` inside `create_app()`. See
+`.env.example` for the full set of supported keys.
 
-- `SESSION_SECRET_KEY` - Flask secret key (default: "super-secret")
-- `PERMANENT_SESSION_LIFETIME_DAYS` - Session lifetime (default: 7)
-- `SQLALCHEMY_DATABASE_URL` - Database URI (default: SQLite in project root)
+Production fail-fast: `APP_ENV=production` with the default placeholder
+`SESSION_SECRET_KEY` raises `ValueError` at app startup.
 
 ### Static Assets Management
 
-Static vendor assets (HTMX, Bootstrap Show Password) are managed via npm and copied to `src/static/vendor/`:
+Static vendor assets (HTMX, Bootstrap Show Password) are managed via bun and copied to `src/app/static/vendor/`:
 
 ```bash
-# Install npm packages and copy vendor files
-npm run build
-
-# Or use mise (runs automatically on mise install)
-mise run place-vendor
-
-# Or install via mise hooks
-mise install
+bun install && ./tools/copy-vendor-assets.sh
 ```
 
 **Asset Sources**:
 - `package.json` defines dependencies (htmx.org, bootstrap-show-password)
-- `mise.toml` contains the `place-vendor` task that copies from `node_modules/` to `src/static/vendor/`
-- Target directory: `src/static/vendor/` (gitignored)
+- `tools/copy-vendor-assets.sh` copies from `node_modules/` to `src/app/static/vendor/`
+- Target directory: `src/app/static/vendor/` (gitignored)
 
 **Important**: Vendor files are NOT committed to git. Run asset installation after cloning the repo.
 
@@ -235,11 +226,12 @@ mise install
 
 ### When Adding New Features
 
-1. **Models**: Add to appropriate file in `models/`, inherit from `Base` and mixins
-2. **Views**: Create Flask-Admin view class in `views/`, register in `admin.py`
-3. **Forms**: Add WTForms class to `forms.py`
-4. **Templates**: Place in `src/templates/admin/`, extend `admin/master.html`
-5. **Migrations**: Run `flask db migrate` after model changes
+1. **Models**: add to `src/app/db/models/`, inherit from `Base` + mixins
+2. **Migrations**: `flask db migrate -m "..."` then `flask db upgrade`
+3. **Domain logic**: add a function to `src/app/services/<area>.py` (HTTP-free, unit-testable)
+4. **Views**: Flask-Admin view class in `src/app/views/`, register in `admin.py`. Views should delegate to services.
+5. **Forms**: WTForms class in `forms.py`
+6. **Templates**: `src/app/templates/admin/`, extend `admin/master.html`
 
 ### Migration Workflow
 
@@ -257,42 +249,44 @@ flask db upgrade
 - Don't create routes with `@app.route()` - use Flask-Admin views
 - Templates must be in `templates/admin/` to work with Flask-Admin's template resolution
 - Forms need CSRF protection from Flask-WTF
-- Vendor assets are gitignored - must run `mise install` or `npm run build` after cloning
+- Vendor assets are gitignored - must run `mise install` or `bun install && ./tools/copy-vendor-assets.sh` after cloning
 
 ### First-Time Setup Checklist
 
 After cloning the repository:
 
-1. Install tools and dependencies: `mise install` (or `just install` + `npm run build`)
-2. Set up database: `flask db upgrade`
-3. Seed test data (optional): `flask seed-users-table && flask seed-sequence-templates-table`
-4. Install pre-commit hooks: `pre-commit install`
-5. Run the app: `flask run`
+1. Install tools: `mise install` (uv, bun, ruff, prek)
+2. Install Python deps: `uv sync --all-groups --all-extras`
+3. Install frontend deps + vendor copy: `bun install && ./tools/copy-vendor-assets.sh`
+4. Set up database: `flask db upgrade`
+5. Seed test data (optional): `flask seed users && flask seed sequences`
+6. Install pre-commit hooks: `prek install`
+7. Run the app: `uv run flask run`
 
 ## Testing Strategy
 
-The project uses pytest with playwright for UI testing. Test infrastructure is configured but test suite is minimal:
+The project uses pytest with playwright for UI testing.
 
 ```bash
 # Run tests
-just test
-
-# Or with pytest directly
 uv run pytest
 
 # With coverage
-just cov
+uv run pytest --cov
 ```
-
-**Note**: See `TODO.md` for planned testing expansion (full pytest suite, tox for multi-version testing, comprehensive playwright UI tests).
 
 ## Project Status
 
-Currently on branch: `feat/models` (major refactoring from old structure)
+Planned features:
 
-Planned features (see TODO.md):
-
-- Add comprehensive tests (pytest, coverage, tox, playwright)
+- Add comprehensive tests:
+  - Snapshot testing
+  - Mutation testing
+  - E2E through Playwright
+  - Unit tests for models and views
+  - Add test fixtures for users, sequences, and templates
+  - Add CI workflow for running tests on push/PR
+  - Add code coverage reporting to CI
 - Daily Routine (auto-instantiated sequences)
 - Instant Tasks (standalone tasks outside sequences)
-- Docker deployment
+- Docker deployment to Docker Hub

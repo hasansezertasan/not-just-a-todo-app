@@ -1,14 +1,13 @@
 # Copyright 2024 Hasan Sezer Taşan <hasansezertasan@gmail.com>
-import datetime
-
 from flask import redirect, url_for
 from flask_admin import expose
 from flask_admin.model.template import EndpointLinkRowAction
 from flask_login import current_user
-from markupsafe import Markup
+from markupsafe import Markup, escape
 from wtforms import TextAreaField
 
-from app.db.models import Sequence, SequenceTemplate, Task, TaskTemplate
+from app.db.models import Sequence, SequenceTemplate, TaskTemplate
+from app.services import sequences as sequence_service
 from app.views.mixins import MemberMixin, MemberPropertyMixin, ModelViewMixin
 
 
@@ -51,10 +50,13 @@ class SequenceTemplateView(MemberMixin, MemberPropertyMixin, ModelViewMixin):
             },
         ),
     ]
+    # `escape()` each task name before joining — task.name is user-supplied
+    # and would otherwise be rendered as raw HTML (XSS). The literal `<br>`
+    # separator is the only HTML we intend to emit.
     column_formatters = {
-        "task_count": lambda v, c, m, p: len(m.tasks),
-        "tasks": lambda v, c, m, p: Markup(
-            "<br>".join([task.name for task in m.tasks]),
+        "task_count": lambda _v, _c, m, _p: len(m.tasks),
+        "tasks": lambda _v, _c, m, _p: Markup("<br>").join(
+            escape(task.name) for task in m.tasks
         ),
     }
     column_extra_row_actions = [
@@ -75,21 +77,9 @@ class SequenceTemplateView(MemberMixin, MemberPropertyMixin, ModelViewMixin):
 
     @expose("/populate/<int:id>", methods=["GET"])
     def populate(self, id):
-        sequence_template = SequenceTemplate.find_by_id(id)
-        sequence = Sequence(
-            name=sequence_template.name,
-            description=sequence_template.description,
-            template_id=id,
-            user_id=current_user.id,
+        sequence = sequence_service.instantiate_from_template(
+            template_id=id, user_id=current_user.id
         )
-        for task_template in sequence_template.tasks:
-            task = Task(
-                name=task_template.name,
-                description=task_template.description,
-                user_id=current_user.id,
-            )
-            sequence.tasks.append(task)
-        sequence.upsert()
         return redirect(url_for("sequence.progress", id=sequence.id))
 
 
@@ -127,20 +117,21 @@ class SequenceView(MemberMixin, MemberPropertyMixin, ModelViewMixin):
             id_arg="id",
         ),
     ]
+    # See `SequenceTemplateView.column_formatters` — the same XSS escape
+    # rule applies: task names embedded in `tasks_summary` are user data.
     column_formatters = {
-        "tasks_summary": lambda v, c, m, p: Markup("<br>".join(m.tasks_summary)),
-        "progress": lambda v, c, m, p: f"{m.completed_task_count}/{m.task_count}",
+        "tasks_summary": lambda _v, _c, m, _p: Markup("<br>").join(
+            escape(s) for s in m.tasks_summary
+        ),
+        "progress": lambda _v, _c, m, _p: f"{m.completed_task_count}/{m.task_count}",
     }
 
     @expose("/progress/<int:id>", methods=["GET"])
     def progress(self, id):
-        sequence = Sequence.find_by_id(id)
+        sequence = sequence_service.get_sequence(id)
         return self.render("admin/sequence-progress.html", sequence=sequence)
 
     @expose("/progress/<int:_id>/task/<int:task_id>/complete", methods=["GET"])
     def complete(self, _id: int, task_id: int):
-        utcnow = datetime.datetime.utcnow()
-        task = Task.query.filter(Task.id == task_id).first()
-        task.date_completed = utcnow
-        task.upsert()
+        sequence_service.mark_task_completed(task_id=task_id)
         return redirect(url_for("sequence.progress", id=_id))

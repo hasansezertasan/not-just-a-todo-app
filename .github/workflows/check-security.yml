@@ -1,0 +1,61 @@
+---
+name: Security Scan
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    # Weekly scan even with no code changes — dependency CVEs land between PRs.
+    - cron: "0 6 * * 1"
+jobs:
+  gitleaks:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  pip-audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - name: Sync runtime dependencies
+        run: uv sync --no-dev --frozen
+      - name: Audit installed packages for known CVEs
+        run: uv run --with pip-audit pip-audit --disable-pip --strict
+  trivy:
+    runs-on: ubuntu-24.04
+    needs: pip-audit
+    steps:
+      - uses: actions/checkout@v6
+      - name: Build image for scanning
+        run: docker build -t njtta:scan .
+      - name: Trivy filesystem + image scan
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: njtta:scan
+          severity: CRITICAL,HIGH
+          exit-code: 1
+          ignore-unfixed: true
+  sbom:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - name: Sync runtime dependencies
+        run: uv sync --no-dev --frozen
+      - name: Generate CycloneDX SBOM
+        run: uv run --with cyclonedx-bom cyclonedx-py environment --output-file sbom.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: sbom.json

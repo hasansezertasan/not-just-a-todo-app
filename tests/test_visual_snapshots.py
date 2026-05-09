@@ -8,8 +8,6 @@ Refresh baselines after intentional UI changes:
 Requires `playwright install chromium` once.
 """
 
-from __future__ import annotations
-
 from typing import TYPE_CHECKING
 
 import pytest
