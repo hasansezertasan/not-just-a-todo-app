@@ -246,8 +246,17 @@ def _init_otel(app: Flask, settings: Settings) -> None:
         )
         return
 
+    import os
+    import socket
+
+    # Standard OTel semantic-convention resource attributes:
+    # - service.version groups spans by deploy (same GIT_SHA used by Sentry).
+    # - service.instance.id distinguishes replicas / gunicorn workers so a
+    #   misbehaving pod is identifiable in collector queries.
     resource = Resource.create({
         "service.name": settings.otel_service_name,
+        "service.version": os.getenv("GIT_SHA") or "0.0.0",
+        "service.instance.id": f"{socket.gethostname()}-{os.getpid()}",
         "deployment.environment": settings.app_env,
     })
     provider = TracerProvider(resource=resource)
