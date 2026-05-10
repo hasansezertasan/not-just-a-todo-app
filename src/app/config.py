@@ -31,6 +31,8 @@ class Settings(BaseSettings):
     sentry_traces_sample_rate: float = Field(default=0.0, ge=0.0, le=1.0)
     db_pool_pre_ping: bool = True
     db_pool_size: int = Field(default=5, ge=1)
+    db_pool_max_overflow: int = Field(default=10, ge=0)
+    db_pool_timeout_seconds: int = Field(default=30, ge=1)
     db_pool_recycle_seconds: int = Field(default=3600, ge=0)
     db_statement_timeout_ms: int = Field(default=0, ge=0)  # 0 = disabled; Postgres only
     sqlalchemy_echo: bool = False
@@ -63,10 +65,12 @@ class Settings(BaseSettings):
             "pool_pre_ping": self.db_pool_pre_ping,
             "pool_recycle": self.db_pool_recycle_seconds,
         }
-        # SQLite uses a static pool by default; pool_size only applies to
-        # connection-pool-based dialects (Postgres, MySQL).
+        # SQLite uses a static pool by default; pool_size + overflow only
+        # apply to connection-pool-based dialects (Postgres, MySQL).
         if not self.sqlalchemy_database_url.startswith("sqlite"):
             engine_options["pool_size"] = self.db_pool_size
+            engine_options["max_overflow"] = self.db_pool_max_overflow
+            engine_options["pool_timeout"] = self.db_pool_timeout_seconds
 
         # Postgres: bound runaway query duration server-side. See
         # docs/operations.md for the coordinated-timeout discipline. SQLite

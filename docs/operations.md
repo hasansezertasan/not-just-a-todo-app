@@ -43,6 +43,47 @@ the worker, the worker's connection isn't returned to the pool, the
 runaway query keeps running on Postgres, and the pool is one slot
 emptier until the next query naturally terminates.
 
+## Database pool sizing
+
+Each gunicorn worker is a *separate process* with its own SQLAlchemy
+engine and pool. `pool_size` is **per-worker**, not cluster-wide.
+
+### Sizing math
+
+```
+total_peak_connections = WEB_CONCURRENCY × (pool_size + max_overflow)
+```
+
+Must stay below `Postgres.max_connections - admin_reserve` (typical:
+`max_connections=100`, reserve ~10 for admin/superuser).
+
+### Per-worker formula
+
+| Worker class | Concurrency | `pool_size` rule |
+|--------------|-------------|------------------|
+| `sync` (default) | 1 request at a time | 2–5 (small; one for the active request, slack for bg activity) |
+| `gthread` (threaded) | N concurrent | `THREADS_PER_WORKER + small_buffer` |
+| `gevent` / `eventlet` (async I/O) | hundreds | larger; tune empirically |
+
+### Tunables
+
+- `DB_POOL_SIZE` — steady-state connections held open per worker (default 5).
+- `DB_POOL_MAX_OVERFLOW` — extra connections opened during bursts, then
+  discarded (default 10). Returns to `pool_size` after `pool_recycle`.
+- `DB_POOL_TIMEOUT_SECONDS` — how long a request waits to acquire a
+  connection before raising (default 30). Should be **less than**
+  `DB_STATEMENT_TIMEOUT_MS` so a starved request fails fast rather than
+  queuing behind a runaway query.
+- `DB_POOL_RECYCLE_SECONDS` — close + reopen connections older than this
+  (default 3600). Prevents stale-connection failures behind firewalls
+  that idle-timeout TCP sessions.
+
+### Sanity check
+
+`2 workers × (5 + 10) = 30` peak connections on Postgres.
+`8 workers × (5 + 10) = 120` — over the 100-default ceiling. Fix by
+either lowering `pool_size`, scaling Postgres, or adding PgBouncer.
+
 ## Worker recycling (gunicorn)
 
 `max_requests` + `max_requests_jitter` in `gunicorn.conf.py`:

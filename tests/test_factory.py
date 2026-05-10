@@ -138,6 +138,29 @@ def test_statement_timeout_disabled_when_zero() -> None:
     assert "connect_args" not in engine_opts
 
 
+def test_pool_overflow_and_timeout_applied_for_postgres() -> None:
+    """pool_size, max_overflow, pool_timeout must surface for non-SQLite URLs."""
+    settings = _settings(
+        sqlalchemy_database_url="postgresql://localhost/test",
+        db_pool_size=8,
+        db_pool_max_overflow=20,
+        db_pool_timeout_seconds=15,
+    )
+    opts = settings.to_flask()["SQLALCHEMY_ENGINE_OPTIONS"]
+    assert opts["pool_size"] == 8
+    assert opts["max_overflow"] == 20
+    assert opts["pool_timeout"] == 15
+
+
+def test_pool_options_omitted_for_sqlite() -> None:
+    """SQLite uses StaticPool — pool_size/max_overflow/pool_timeout are no-ops."""
+    settings = _settings(db_pool_size=8, db_pool_max_overflow=20)
+    opts = settings.to_flask()["SQLALCHEMY_ENGINE_OPTIONS"]
+    assert "pool_size" not in opts
+    assert "max_overflow" not in opts
+    assert "pool_timeout" not in opts
+
+
 def test_sqlalchemy_echo_propagates_when_enabled() -> None:
     """`SQLALCHEMY_ECHO=true` flows through Settings to app.config."""
     settings = _settings(sqlalchemy_echo=True)
