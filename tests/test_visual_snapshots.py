@@ -8,6 +8,7 @@ Refresh baselines after intentional UI changes:
 Requires `playwright install chromium` once.
 """
 
+import os
 from typing import TYPE_CHECKING
 
 import pytest
@@ -17,6 +18,13 @@ from tests.extensions import PNGImageExtension
 if TYPE_CHECKING:
     from playwright.sync_api import Page
     from syrupy.assertion import SnapshotAssertion
+
+# PNG diffs are environment-sensitive (font hinting, GPU AA). Until we pin a
+# container with deterministic rendering, gate visual snapshots to local runs.
+pytestmark = pytest.mark.skipif(
+    os.getenv("CI") == "true",
+    reason="visual PNG snapshots require pinned rendering env; local-only",
+)
 
 VIEWPORT = {"width": 1280, "height": 720}
 

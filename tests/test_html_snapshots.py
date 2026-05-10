@@ -17,10 +17,10 @@ if TYPE_CHECKING:
     from syrupy.assertion import SnapshotAssertion
 
 PAGES = [
-    ("index", "/admin/"),
+    ("index", "/"),
     ("about", "/about/"),
-    ("login", "/admin/login"),
-    ("register", "/admin/register"),
+    ("login", "/login/"),
+    ("register", "/register/"),
 ]
 
 

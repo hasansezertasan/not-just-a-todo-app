@@ -6,7 +6,7 @@ from datetime import timedelta
 import pytest
 from werkzeug.middleware.proxy_fix import ProxyFix
 
-from app.config import Settings
+from app.config import DEFAULT_DEV_SECRET, Settings
 from app.factory import create_app
 
 
@@ -67,10 +67,16 @@ def test_session_lifetime_is_timedelta() -> None:
     assert app.config["PERMANENT_SESSION_LIFETIME"] == timedelta(days=14)
 
 
-def test_production_requires_explicit_secret() -> None:
+def test_production_requires_explicit_secret(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     """Production must reject the default placeholder secret."""
+    monkeypatch.delenv("SESSION_SECRET_KEY", raising=False)
     with pytest.raises(ValueError, match="SESSION_SECRET_KEY"):
-        Settings(app_env="production")  # type: ignore[arg-type]
+        Settings(
+            app_env="production",
+            session_secret_key=DEFAULT_DEV_SECRET,  # type: ignore[arg-type]
+        )
 
 
 def test_production_secure_cookies() -> None:
