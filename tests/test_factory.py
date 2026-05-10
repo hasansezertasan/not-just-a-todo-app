@@ -96,6 +96,21 @@ def test_sqlalchemy_echo_off_by_default() -> None:
     assert settings.to_flask()["SQLALCHEMY_ECHO"] is False
 
 
+def test_static_max_age_long_in_production() -> None:
+    """flask-static-digest fingerprints filenames → safe to cache 1 year."""
+    settings = Settings(
+        app_env="production",
+        session_secret_key="real",  # type: ignore[arg-type]
+    )
+    assert settings.to_flask()["SEND_FILE_MAX_AGE_DEFAULT"] == 31536000
+
+
+def test_static_max_age_zero_in_dev() -> None:
+    """Dev gets 0 so CSS/JS edits surface without hard refresh."""
+    settings = Settings(app_env="development")
+    assert settings.to_flask()["SEND_FILE_MAX_AGE_DEFAULT"] == 0
+
+
 def test_sqlalchemy_echo_propagates_when_enabled() -> None:
     """`SQLALCHEMY_ECHO=true` flows through Settings to app.config."""
     settings = _settings(sqlalchemy_echo=True)

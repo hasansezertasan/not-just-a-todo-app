@@ -76,6 +76,10 @@ class Settings(BaseSettings):
             "SQLALCHEMY_TRACK_MODIFICATIONS": False,
             "SQLALCHEMY_ECHO": self.sqlalchemy_echo,
             "SQLALCHEMY_ENGINE_OPTIONS": engine_options,
+            # Pairs with flask-static-digest: hashed filenames change on deploy,
+            # so the file at any given URL is immutable → safe to cache for a
+            # year. Dev gets 0 so CSS/JS edits surface without hard refresh.
+            "SEND_FILE_MAX_AGE_DEFAULT": 31536000 if self.is_production else 0,
             "SESSION_COOKIE_HTTPONLY": True,
             "SESSION_COOKIE_SECURE": self.is_production,
             "SESSION_COOKIE_SAMESITE": self.session_cookie_samesite,
