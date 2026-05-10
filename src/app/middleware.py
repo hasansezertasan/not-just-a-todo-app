@@ -14,6 +14,30 @@ from flask import Flask, Response, current_app, g, jsonify, render_template, req
 logger = logging.getLogger(__name__)
 
 
+def register_sentry_user_context(app: Flask) -> None:
+    """Bind the authenticated user to every Sentry event.
+
+    Sentry's UI then shows "this error affects N users" instead of just
+    occurrence counts — distinguishes single-user weird-state bugs from
+    broad outages. Sends `id` + `username` only; no email/PII.
+    """
+
+    @app.before_request
+    def _bind_user_to_sentry() -> None:
+        try:
+            import sentry_sdk
+        except ImportError:
+            return
+        try:
+            from flask_login import current_user
+        except ImportError:
+            return
+        if getattr(current_user, "is_authenticated", False):
+            sentry_sdk.set_user(
+                {"id": current_user.id, "username": current_user.username}
+            )
+
+
 def register_request_id(app: Flask) -> None:
     """Assign a UUID per request, log it, and echo it back in `X-Request-ID`.
 

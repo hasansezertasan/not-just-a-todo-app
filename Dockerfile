@@ -56,6 +56,8 @@ COPY --chown=app:app gunicorn.conf.py /app/gunicorn.conf.py
 COPY --chown=app:app docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
+ARG GIT_SHA=""
+
 ENV PATH="/app/.venv/bin:${PATH}" \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
@@ -63,7 +65,8 @@ ENV PATH="/app/.venv/bin:${PATH}" \
     APP_ENV=production \
     LOG_LEVEL=INFO \
     WEB_CONCURRENCY=2 \
-    PORT=8000
+    PORT=8000 \
+    GIT_SHA=${GIT_SHA}
 
 USER app
 EXPOSE 8000

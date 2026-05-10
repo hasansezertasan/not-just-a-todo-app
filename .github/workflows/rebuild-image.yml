@@ -30,6 +30,8 @@ jobs:
           # upstream security patches.
           pull: true
           no-cache: true
+          build-args: |
+            GIT_SHA=${{ github.sha }}
           tags: |
             ghcr.io/${{ github.repository }}:weekly
             ghcr.io/${{ github.repository }}:weekly-${{ github.run_number }}

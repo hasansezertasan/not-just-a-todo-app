@@ -121,6 +121,17 @@ def test_rate_limit_storage_uri_configured(app: Flask) -> None:
     assert app.config.get("RATELIMIT_STORAGE_URI") is not None
 
 
+def test_sentry_user_context_hook_registered(app: Flask) -> None:
+    """A `before_request` callable should be installed for Sentry user-binding.
+
+    We don't assert it ran (Sentry isn't initialized in tests) — only that
+    the hook is wired so it fires when Sentry is enabled in production.
+    """
+    funcs = list(app.before_request_funcs.get(None, []))
+    names = [f.__name__ for f in funcs]
+    assert "_bind_user_to_sentry" in names
+
+
 def test_rate_limiter_settings_have_sensible_defaults() -> None:
     """The Settings object exposes per-endpoint rate-limit strings.
 

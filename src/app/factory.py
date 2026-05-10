@@ -30,6 +30,7 @@ from app.middleware import (
     register_error_handlers,
     register_request_id,
     register_security_headers,
+    register_sentry_user_context,
 )
 
 logger = logging.getLogger(__name__)
@@ -62,6 +63,7 @@ def create_app(settings: Settings | None = None) -> Flask:
     register_request_id(app)
     register_security_headers(app)
     register_error_handlers(app)
+    register_sentry_user_context(app)
     _init_metrics(app, settings)
     _init_otel(app, settings)
     _apply_proxy_fix(app)
@@ -260,7 +262,11 @@ def _init_otel(app: Flask, settings: Settings) -> None:
 
 
 def _init_sentry(settings: Settings) -> None:
-    """Wire Sentry only when a DSN is provided. Optional dep — soft import."""
+    """Wire Sentry only when a DSN is provided. Optional dep — soft import.
+
+    `release` is sourced from `GIT_SHA` (CI build-arg) so Sentry can group
+    errors by deploy, surface regressions, and run release-health metrics.
+    """
     if not settings.sentry_dsn:
         return
     try:
@@ -270,11 +276,14 @@ def _init_sentry(settings: Settings) -> None:
         logger.warning("SENTRY_DSN set but sentry-sdk not installed; skipping")
         return
 
+    import os
+
     sentry_sdk.init(
         dsn=settings.sentry_dsn,
         integrations=[FlaskIntegration()],
         traces_sample_rate=settings.sentry_traces_sample_rate,
         environment=settings.app_env,
+        release=os.getenv("GIT_SHA") or None,
         send_default_pii=False,
     )
 
