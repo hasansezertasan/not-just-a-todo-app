@@ -44,6 +44,13 @@ def record_failed_login(user: User) -> None:
     user.failed_login_count = (user.failed_login_count or 0) + 1
     if user.failed_login_count >= threshold:
         user.locked_until = _now() + datetime.timedelta(minutes=minutes)
+        # Bump the lockout Prometheus counter on the *transition* to locked,
+        # not on every failed attempt — gives a useful "lockouts/sec" metric.
+        from app.observability import metrics as domain_metrics
+
+        counter = domain_metrics.get("account_lockouts")
+        if counter is not None:
+            counter.inc()
     user.upsert()
 
 

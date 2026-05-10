@@ -38,6 +38,61 @@ def register_sentry_user_context(app: Flask) -> None:
             )
 
 
+_OBS_PATHS_SKIP_CANONICAL_LOG = ("/healthz", "/livez", "/readyz", "/metrics")
+
+
+def register_canonical_log_line(app: Flask) -> None:
+    """Emit one structured log record per request — wide-event pattern.
+
+    A single record per request is the densest unit of observability:
+    paired with the JSON formatter, every `extra={}` key becomes a
+    queryable field in Loki/Datadog/ELK. Replaces ~10 ad-hoc log calls
+    with one canonical line whose schema is grep-friendly.
+
+    Skipped on probe / metrics paths to keep the access log focused on
+    user-facing traffic.
+    """
+    import time
+
+    from flask import request
+    from flask_login import current_user
+
+    @app.before_request
+    def _start_canonical_timer() -> None:
+        g.canonical_start = time.perf_counter()
+
+    @app.after_request
+    def _emit_canonical(response: Response) -> Response:
+        if request.path.startswith(_OBS_PATHS_SKIP_CANONICAL_LOG):
+            return response
+
+        start = g.get("canonical_start")
+        duration_ms = (
+            round((time.perf_counter() - start) * 1000, 2) if start else None
+        )
+
+        user_id = (
+            getattr(current_user, "id", None)
+            if getattr(current_user, "is_authenticated", False)
+            else None
+        )
+
+        logger.info(
+            "request",
+            extra={
+                "method": request.method,
+                "path": request.path,
+                "status": response.status_code,
+                "duration_ms": duration_ms,
+                "user_id": user_id,
+                "remote_addr": request.remote_addr,
+                "endpoint": request.endpoint,
+                "content_length": response.calculate_content_length(),
+            },
+        )
+        return response
+
+
 def register_request_id(app: Flask) -> None:
     """Assign a UUID per request, log it, and echo it back in `X-Request-ID`.
 

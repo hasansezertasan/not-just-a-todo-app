@@ -27,6 +27,7 @@ from app.extensions import (
     static_digest,
 )
 from app.middleware import (
+    register_canonical_log_line,
     register_error_handlers,
     register_request_id,
     register_security_headers,
@@ -64,6 +65,7 @@ def create_app(settings: Settings | None = None) -> Flask:
     register_security_headers(app)
     register_error_handlers(app)
     register_sentry_user_context(app)
+    register_canonical_log_line(app)
     _init_metrics(app, settings)
     _init_otel(app, settings)
     _apply_proxy_fix(app)
@@ -215,9 +217,14 @@ def _init_metrics(app: Flask, settings: Settings) -> None:
     from prometheus_client import CollectorRegistry
     from prometheus_flask_exporter import PrometheusMetrics
 
+    from app.observability import metrics as domain_metrics
+
     registry = CollectorRegistry()
     metrics = PrometheusMetrics(app, group_by="endpoint", registry=registry)
     metrics.info("app_info", "Application info", version="0.1.0", env=settings.app_env)
+    # Domain counters share the per-app registry — same /metrics endpoint
+    # serves both flask_* HTTP metrics and app_* business metrics.
+    app.extensions["app_metrics"] = domain_metrics.build(registry)
 
 
 def _init_otel(app: Flask, settings: Settings) -> None:
