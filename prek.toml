@@ -2,7 +2,7 @@
 # Configuration file for `prek`, a git hook framework written in Rust.
 # See https://prek.j178.dev for more information.
 default_language_version.python = "3.14"
-exclude.glob = [".devcontainer/**", ".vscode/**"]
+exclude.glob = [".devcontainer/**", ".vscode/**", "tests/__snapshots__/**"]
 [[repos]]
 repo = "builtin"
 hooks = [
