@@ -7,6 +7,7 @@ from app.db.models.users import User
 from app.forms import LoginForm, RegisterForm
 from app.observability import metrics as domain_metrics
 from app.services import auth as auth_service
+from app.services import password_breach as breach_service
 
 
 def _bump(name: str, **labels: str) -> None:
@@ -84,6 +85,15 @@ class IndexView(AdminIndexView):
             if found:
                 _bump("registrations", result="duplicate_username")
                 flash("Username already exists.", "danger")
+                return self.render(template="admin/form-page.html", form=form)
+
+            if breach_service.is_breached(form.password.data):
+                _bump("registrations", result="breached_password")
+                flash(
+                    "That password has appeared in known data breaches. "
+                    "Choose a different one.",
+                    "danger",
+                )
                 return self.render(template="admin/form-page.html", form=form)
 
             user = User(

@@ -46,6 +46,8 @@ class Settings(BaseSettings):
     rate_limit_register: str = "5 per hour"
     account_lockout_threshold: int = Field(default=5, ge=1)
     account_lockout_minutes: int = Field(default=15, ge=1)
+    password_breach_check_enabled: bool = False
+    password_breach_api_timeout_seconds: float = Field(default=2.0, ge=0.1)
     debug_toolbar_enabled: bool = False
 
     @model_validator(mode="after")
@@ -105,4 +107,8 @@ class Settings(BaseSettings):
             "PREFERRED_URL_SCHEME": "https" if self.is_production else "http",
             "ACCOUNT_LOCKOUT_THRESHOLD": self.account_lockout_threshold,
             "ACCOUNT_LOCKOUT_MINUTES": self.account_lockout_minutes,
+            "PASSWORD_BREACH_CHECK_ENABLED": self.password_breach_check_enabled,
+            "PASSWORD_BREACH_API_TIMEOUT_SECONDS": (
+                self.password_breach_api_timeout_seconds
+            ),
         }
