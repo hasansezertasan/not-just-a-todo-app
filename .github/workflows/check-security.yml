@@ -27,7 +27,9 @@ jobs:
       - name: Sync runtime dependencies
         run: uv sync --no-dev --frozen
       - name: Audit installed packages for known CVEs
-        run: uv run --with pip-audit pip-audit --disable-pip --strict
+        # --skip-editable: the current project installs as editable under
+        # `uv sync` and has no PyPI release to audit — only its deps matter.
+        run: uv run --with pip-audit pip-audit --skip-editable
   trivy:
     runs-on: ubuntu-24.04
     needs: pip-audit

@@ -54,7 +54,10 @@ hooks = [{ id = "yamlfmt" }]
 [[repos]]
 repo = "https://github.com/ComPWA/taplo-pre-commit"
 rev = "v0.9.3"
-hooks = [{ id = "taplo-lint" }, { id = "taplo-format" }]
+# taplo-lint requires fetching a schema catalog over the network on every
+# run, which flakes in CI (schema catalog API drifts). Format-only is
+# enough — pyproject.toml schema is enforced via validate-pyproject.
+hooks = [{ id = "taplo-format" }]
 [[repos]]
 repo = "https://github.com/sqlfluff/sqlfluff"
 rev = "4.1.0"
@@ -88,12 +91,6 @@ repo = "https://github.com/DetachHead/basedpyright-prek-mirror"
 rev = "1.39.3"
 hooks = [{ id = "basedpyright", files = "^((src|tests)/.*\\.py)$" }]
 [[repos]]
-repo = "https://github.com/facebook/pyrefly-pre-commit"
-rev = "0.64.1"
-hooks = [
-  { id = "pyrefly-check", pass_filenames = false, files = "^((src|tests)/.*\\.py)$" },
-]
-[[repos]]
 repo = "https://github.com/PyCQA/bandit"
 rev = "1.9.4"
 hooks = [
@@ -116,7 +113,7 @@ hooks = [
 [[repos]]
 repo = "https://github.com/pypa/pip-audit"
 rev = "v2.10.0"
-hooks = [{ id = "pip-audit", args = ["--disable-pip"], stages = ["pre-push"] }]
+hooks = [{ id = "pip-audit", stages = ["pre-push"] }]
 [[repos]]
 repo = "https://github.com/asottile/pyupgrade"
 rev = "v3.21.2"

@@ -9,4 +9,14 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
-      - uses: j178/prek-action@6ad80277337ad479fe43bd70701c3f7f8aa74db3  # v2.0.3
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      # basedpyright needs project deps importable to resolve third-party
+      # symbols. Run prek inside the uv-managed venv so site-packages is
+      # populated; the wrapped prek-action runs in an isolated env that
+      # cannot see uv's venv.
+      - name: Sync dependencies
+        run: uv sync --all-groups --frozen
+      - name: Run prek
+        run: uv run --with prek prek run --all-files --show-diff-on-failure

@@ -16,7 +16,10 @@ is lower than the cost of denying signup during an HIBP outage.
 import hashlib
 import logging
 from urllib.error import URLError
-from urllib.request import Request, urlopen  # noqa: S310 — fixed https URL
+from urllib.request import (  # noqa: S310 — fixed https URL  # nosec B310
+    Request,
+    urlopen,
+)
 
 from flask import current_app
 
@@ -33,18 +36,16 @@ def breach_count(password: str, *, timeout: float | None = None) -> int | None:
         - None: API unreachable; caller decides policy.
     """
     if timeout is None:
-        timeout = current_app.config.get(
-            "PASSWORD_BREACH_API_TIMEOUT_SECONDS", 2.0
-        )
-    sha1 = hashlib.sha1(password.encode("utf-8")).hexdigest().upper()  # noqa: S324
+        timeout = current_app.config.get("PASSWORD_BREACH_API_TIMEOUT_SECONDS", 2.0)
+    sha1 = hashlib.sha1(password.encode("utf-8")).hexdigest().upper()  # noqa: S324  # nosec B324
     prefix, suffix = sha1[:5], sha1[5:]
 
-    req = Request(  # noqa: S310 — URL is a fixed-scheme constant
+    req = Request(  # noqa: S310 — URL is a fixed-scheme constant  # nosec B310
         _HIBP_URL.format(prefix=prefix),
         headers={"User-Agent": "not-just-a-todo-app", "Add-Padding": "true"},
     )
     try:
-        with urlopen(req, timeout=timeout) as resp:  # noqa: S310
+        with urlopen(req, timeout=timeout) as resp:  # noqa: S310  # nosec B310
             body = resp.read().decode("utf-8")
     except (URLError, TimeoutError) as exc:
         logger.warning("HIBP unavailable: %s", exc)

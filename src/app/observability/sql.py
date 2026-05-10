@@ -27,9 +27,7 @@ def register_slow_query_logger(engine: Engine, threshold_ms: int = 100) -> None:
         context._query_start_ts = time.perf_counter()  # noqa: SLF001
 
     @event.listens_for(engine, "after_cursor_execute")
-    def _check_threshold(
-        _conn, _cursor, statement, parameters, context, executemany
-    ):
+    def _check_threshold(_conn, _cursor, statement, parameters, context, executemany):
         elapsed_ms = (time.perf_counter() - context._query_start_ts) * 1000  # noqa: SLF001
         if elapsed_ms < threshold_ms:
             return

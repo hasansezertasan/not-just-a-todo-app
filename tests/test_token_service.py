@@ -16,9 +16,7 @@ if TYPE_CHECKING:
 def test_sign_and_verify_roundtrip(app: Flask) -> None:
     with app.app_context():
         token = token_service.sign({"user_id": 42}, salt="password-reset")
-        payload = token_service.verify(
-            token, salt="password-reset", max_age_seconds=60
-        )
+        payload = token_service.verify(token, salt="password-reset", max_age_seconds=60)
     assert payload == {"user_id": 42}
 
 
@@ -27,9 +25,7 @@ def test_tampered_token_rejected(app: Flask) -> None:
         token = token_service.sign(7, salt="password-reset")
         tampered = token[:-1] + ("A" if token[-1] != "A" else "B")
         with pytest.raises(TokenError, match="invalid"):
-            token_service.verify(
-                tampered, salt="password-reset", max_age_seconds=60
-            )
+            token_service.verify(tampered, salt="password-reset", max_age_seconds=60)
 
 
 def test_cross_salt_token_rejected(app: Flask) -> None:
@@ -37,9 +33,7 @@ def test_cross_salt_token_rejected(app: Flask) -> None:
     with app.app_context():
         token = token_service.sign(99, salt="password-reset")
         with pytest.raises(TokenError, match="invalid"):
-            token_service.verify(
-                token, salt="email-verify", max_age_seconds=60
-            )
+            token_service.verify(token, salt="email-verify", max_age_seconds=60)
 
 
 def test_expired_token_rejected(app: Flask) -> None:
@@ -53,6 +47,4 @@ def test_expired_token_rejected(app: Flask) -> None:
         token = token_service.sign(1, salt="password-reset")
         time.sleep(2.1)
         with pytest.raises(TokenError, match="expired"):
-            token_service.verify(
-                token, salt="password-reset", max_age_seconds=1
-            )
+            token_service.verify(token, salt="password-reset", max_age_seconds=1)
