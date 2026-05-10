@@ -135,7 +135,7 @@ Healthcheck probes `/readyz`. Persistent state (SQLite DB) lives in the
 src/app/
   factory.py    # create_app() — wires extensions, middleware, CLI
   wsgi.py       # gunicorn entrypoint — `app = create_app()`
-  config.py     # pydantic Settings (loads .env, validates)
+  config.py     # Pydantic Settings (loads .env, validates)
   extensions.py # module-level singletons (db, login_manager, ...)
   middleware.py # request-id, security headers, error handlers
   admin.py      # Flask-Admin instance + add_view registrations

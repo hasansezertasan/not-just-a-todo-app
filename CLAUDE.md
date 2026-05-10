@@ -269,7 +269,7 @@ After cloning the repository:
 
 ## Testing Strategy
 
-The project uses pytest with playwright for UI testing.
+The project uses pytest with Playwright for UI testing.
 
 ```bash
 # Run tests
