@@ -49,6 +49,12 @@ otel = [
 ]
 
 
+[project.urls]
+Homepage = "https://github.com/hasansezertasan/not-just-a-todo-app"
+Repository = "https://github.com/hasansezertasan/not-just-a-todo-app"
+Issues = "https://github.com/hasansezertasan/not-just-a-todo-app/issues"
+
+
 [project.scripts]
 # Lets `pip install .` expose `app` as a CLI shim around `flask --app app.wsgi`.
 app = "flask.cli:main"
