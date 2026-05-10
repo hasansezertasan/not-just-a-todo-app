@@ -25,6 +25,16 @@ timeout = int(os.getenv("GUNICORN_TIMEOUT", "30"))
 graceful_timeout = int(os.getenv("GUNICORN_GRACEFUL_TIMEOUT", "30"))
 keepalive = int(os.getenv("GUNICORN_KEEPALIVE", "5"))
 
+# --- Worker recycling -------------------------------------------------------
+# Recycle each worker after handling N requests. Cheap insurance against
+# slow memory leaks in long-lived web workers (Flask + SQLAlchemy + a dozen
+# extensions accumulate). Disabled when set to 0.
+#
+# Jitter spreads recycle events across workers so they don't all restart at
+# the same moment — preventing a synchronized capacity dip.
+max_requests = int(os.getenv("GUNICORN_MAX_REQUESTS", "1000"))
+max_requests_jitter = int(os.getenv("GUNICORN_MAX_REQUESTS_JITTER", "100"))
+
 # --- Logging ----------------------------------------------------------------
 accesslog = "-"
 errorlog = "-"
