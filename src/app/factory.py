@@ -54,7 +54,7 @@ def create_app(settings: Settings | None = None) -> Flask:
 
     app.config["RATELIMIT_STORAGE_URI"] = settings.rate_limit_storage_uri
 
-    _init_extensions(app)
+    _init_extensions(app, settings)
     _register_cli(app)
     _register_health(app)
     _register_shell_context(app)
@@ -74,12 +74,19 @@ def create_app(settings: Settings | None = None) -> Flask:
     return app
 
 
-def _init_extensions(app: Flask) -> None:
+def _init_extensions(app: Flask, settings: Settings) -> None:
     db.init_app(app)
     # sqlalchemy-mixins' AllFeaturesMixin needs a session bound on the Base
     # class so `Model.query` / `Model.find_by_id` work without an explicit
     # `db.session.query(Model)` call.
     Base.set_session(db.session)
+    if settings.slow_query_logging_enabled:
+        from app.observability.sql import register_slow_query_logger
+
+        with app.app_context():
+            register_slow_query_logger(
+                db.engine, threshold_ms=settings.slow_query_threshold_ms
+            )
     migrate.init_app(
         app=app,
         db=db,

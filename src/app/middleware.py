@@ -33,9 +33,10 @@ def register_sentry_user_context(app: Flask) -> None:
         except ImportError:
             return
         if getattr(current_user, "is_authenticated", False):
-            sentry_sdk.set_user(
-                {"id": current_user.id, "username": current_user.username}
-            )
+            sentry_sdk.set_user({
+                "id": current_user.id,
+                "username": current_user.username,
+            })
 
 
 _OBS_PATHS_SKIP_CANONICAL_LOG = ("/healthz", "/livez", "/readyz", "/metrics")
@@ -67,9 +68,7 @@ def register_canonical_log_line(app: Flask) -> None:
             return response
 
         start = g.get("canonical_start")
-        duration_ms = (
-            round((time.perf_counter() - start) * 1000, 2) if start else None
-        )
+        duration_ms = round((time.perf_counter() - start) * 1000, 2) if start else None
 
         user_id = (
             getattr(current_user, "id", None)
@@ -176,7 +175,7 @@ def register_error_handlers(app: Flask) -> None:
     def _server_error(e):
         # Full detail (with traceback) goes to logs — request_id correlates
         # the user-facing 500 with the structured log entry.
-        logger.exception(
+        logger.error(
             "unhandled exception",
             extra={"request_id": g.get("request_id")},
         )

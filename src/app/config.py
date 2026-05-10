@@ -36,6 +36,8 @@ class Settings(BaseSettings):
     db_pool_recycle_seconds: int = Field(default=3600, ge=0)
     db_statement_timeout_ms: int = Field(default=0, ge=0)  # 0 = disabled; Postgres only
     sqlalchemy_echo: bool = False
+    slow_query_logging_enabled: bool = True
+    slow_query_threshold_ms: int = Field(default=100, ge=0)
     metrics_enabled: bool = True
     otel_endpoint: str | None = None
     otel_service_name: str = "not-just-a-todo-app"
