@@ -115,6 +115,26 @@ HEAD-only.
 Safe because `flask-static-digest` adds a content hash to every static
 filename. Old hashes are immutable; new deploys produce new hashes.
 
+## HMAC-signed URL tokens
+
+`app.services.tokens` wraps `itsdangerous.URLSafeTimedSerializer` for
+embed-in-URL flows (password reset, email verify, magic login,
+unsubscribe). Two contracts:
+
+- `sign(payload, *, salt: str) -> str` — opaque URL-safe token with
+  HMAC of `payload` keyed by `SECRET_KEY` + `salt`.
+- `verify(token, *, salt, max_age_seconds) -> payload` — raises
+  `TokenError` on bad signature or expiry.
+
+**Use a unique `salt` per flow** (`"password-reset"`,
+`"email-verify"`, ...). Salts namespace tokens so a reset link can't
+be replayed against the verify endpoint, even with the same payload
+and signing key.
+
+Token lifetime survives `SECRET_KEY` rotation only when the old key is
+kept on a verifier list — out of scope for now; treat token validity
+as ending at the next secret rotation.
+
 ## Sentry release tagging
 
 Errors are grouped by `release=GIT_SHA` so Sentry can:
