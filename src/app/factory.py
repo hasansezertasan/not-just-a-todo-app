@@ -130,8 +130,11 @@ def _register_health(app: Flask) -> None:
         try:
             db.session.execute(text("SELECT 1"))
         except Exception as exc:  # noqa: BLE001 — readiness must not raise
-            logger.warning("readiness check failed: %s", exc)
-            response = jsonify(status="error", db="down", detail=str(exc))
+            # Full detail goes to logs only — `/readyz` is unauthenticated
+            # and often public via load balancers; raw driver errors can
+            # leak DB topology / driver versions to attackers.
+            logger.warning("readiness check failed: %s", exc, exc_info=True)
+            response = jsonify(status="error", db="down")
             response.headers.update(no_cache)
             return response, 503
         response = jsonify(status="ok", db="up")

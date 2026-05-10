@@ -84,6 +84,7 @@ class Settings(BaseSettings):
             }
 
         return {
+            "APP_ENV": self.app_env,
             "SECRET_KEY": self.session_secret_key.get_secret_value(),
             "PERMANENT_SESSION_LIFETIME": timedelta(
                 days=self.permanent_session_lifetime_days

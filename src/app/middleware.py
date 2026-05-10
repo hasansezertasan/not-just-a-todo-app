@@ -174,11 +174,14 @@ def register_error_handlers(app: Flask) -> None:
 
     @app.errorhandler(500)
     def _server_error(e):
-        logger.error("unhandled exception", extra={"request_id": g.get("request_id")})
-        # Don't leak internal details in production.
-        message = (
-            "Internal Server Error"
-            if current_app.config.get("ENV") == "production"
-            else f"{type(e).__name__}: {e}"
+        # Full detail (with traceback) goes to logs — request_id correlates
+        # the user-facing 500 with the structured log entry.
+        logger.exception(
+            "unhandled exception",
+            extra={"request_id": g.get("request_id")},
         )
+        # Outside dev, don't leak exception type/message — debuggers should
+        # use the request_id to look up the full record in logs.
+        is_dev = current_app.config.get("APP_ENV") == "development"
+        message = f"{type(e).__name__}: {e}" if is_dev else "Internal Server Error"
         return _render(500, message)
