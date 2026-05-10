@@ -32,6 +32,7 @@ class Settings(BaseSettings):
     db_pool_pre_ping: bool = True
     db_pool_size: int = Field(default=5, ge=1)
     db_pool_recycle_seconds: int = Field(default=3600, ge=0)
+    db_statement_timeout_ms: int = Field(default=0, ge=0)  # 0 = disabled; Postgres only
     sqlalchemy_echo: bool = False
     metrics_enabled: bool = True
     otel_endpoint: str | None = None
@@ -66,6 +67,17 @@ class Settings(BaseSettings):
         # connection-pool-based dialects (Postgres, MySQL).
         if not self.sqlalchemy_database_url.startswith("sqlite"):
             engine_options["pool_size"] = self.db_pool_size
+
+        # Postgres: bound runaway query duration server-side. See
+        # docs/operations.md for the coordinated-timeout discipline. SQLite
+        # has no equivalent — flag is a no-op there.
+        if (
+            "postgresql" in self.sqlalchemy_database_url
+            and self.db_statement_timeout_ms > 0
+        ):
+            engine_options["connect_args"] = {
+                "options": f"-c statement_timeout={self.db_statement_timeout_ms}",
+            }
 
         return {
             "SECRET_KEY": self.session_secret_key.get_secret_value(),

@@ -111,6 +111,33 @@ def test_static_max_age_zero_in_dev() -> None:
     assert settings.to_flask()["SEND_FILE_MAX_AGE_DEFAULT"] == 0
 
 
+def test_statement_timeout_no_op_for_sqlite() -> None:
+    """SQLite has no statement_timeout — connect_args must NOT be set."""
+    settings = _settings(db_statement_timeout_ms=25000)
+    engine_opts = settings.to_flask()["SQLALCHEMY_ENGINE_OPTIONS"]
+    assert "connect_args" not in engine_opts
+
+
+def test_statement_timeout_applied_for_postgres() -> None:
+    """Postgres URLs must surface the timeout via connect_args.options."""
+    settings = _settings(
+        sqlalchemy_database_url="postgresql://localhost/test",
+        db_statement_timeout_ms=25000,
+    )
+    engine_opts = settings.to_flask()["SQLALCHEMY_ENGINE_OPTIONS"]
+    assert engine_opts["connect_args"] == {"options": "-c statement_timeout=25000"}
+
+
+def test_statement_timeout_disabled_when_zero() -> None:
+    """0 means disabled even for Postgres — no connect_args set."""
+    settings = _settings(
+        sqlalchemy_database_url="postgresql://localhost/test",
+        db_statement_timeout_ms=0,
+    )
+    engine_opts = settings.to_flask()["SQLALCHEMY_ENGINE_OPTIONS"]
+    assert "connect_args" not in engine_opts
+
+
 def test_sqlalchemy_echo_propagates_when_enabled() -> None:
     """`SQLALCHEMY_ECHO=true` flows through Settings to app.config."""
     settings = _settings(sqlalchemy_echo=True)

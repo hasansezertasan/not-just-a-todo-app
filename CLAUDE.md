@@ -207,6 +207,10 @@ passed to `app.config.from_mapping(...)` inside `create_app()`. See
 Production fail-fast: `APP_ENV=production` with the default placeholder
 `SESSION_SECRET_KEY` raises `ValueError` at app startup.
 
+For operational tuning notes — DB statement timeouts, coordinated-timeout
+discipline, worker recycling, health probes, static caching, Sentry
+releases — see [`docs/operations.md`](docs/operations.md).
+
 ### Static Assets Management
 
 Static vendor assets (HTMX, Bootstrap Show Password) are managed via bun and copied to `src/app/static/vendor/`:
