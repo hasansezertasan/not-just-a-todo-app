@@ -129,12 +129,20 @@ prek run --all-files
 This project uses [`prek`](https://github.com/j178/prek) (Rust port of pre-commit, installed via `mise`).
 
 ```bash
-# Install hooks
+# Install pre-commit hooks
 prek install
+
+# Install commit-msg hook (commitizen / Conventional Commits enforcement)
+prek install --hook-type commit-msg
 
 # Run manually
 prek run --all-files
 ```
+
+`commitizen` enforces Conventional Commits at commit time. Use `cz commit`
+(or `cz c`) for an interactive prompt, or write the message manually
+following the `type(scope): subject` format — bad messages are rejected
+by the commit-msg hook.
 
 ### Documentation & Utilities
 
