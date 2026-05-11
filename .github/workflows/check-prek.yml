@@ -17,6 +17,8 @@ jobs:
       # populated; the wrapped prek-action runs in an isolated env that
       # cannot see uv's venv.
       - name: Sync dependencies
-        run: uv sync --all-groups --frozen
+        # --all-extras pulls the optional `otel` group so basedpyright can
+        # resolve the soft-imported OpenTelemetry symbols in factory.py.
+        run: uv sync --all-groups --all-extras --frozen
       - name: Run prek
         run: uv run --with prek prek run --all-files --show-diff-on-failure
