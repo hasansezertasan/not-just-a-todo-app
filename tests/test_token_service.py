@@ -23,7 +23,13 @@ def test_sign_and_verify_roundtrip(app: Flask) -> None:
 def test_tampered_token_rejected(app: Flask) -> None:
     with app.app_context():
         token = token_service.sign(7, salt="password-reset")
-        tampered = token[:-1] + ("A" if token[-1] != "A" else "B")
+        # Flip a char inside the signature segment, away from the final
+        # base64url char — the terminal char of a 20-byte HMAC encodes
+        # only 4 real bits + 2 padding bits, so naive last-char swaps
+        # can collide on padding and decode unchanged.
+        sig_start = token.rindex(".") + 1
+        mid = sig_start + (len(token) - sig_start) // 2
+        tampered = token[:mid] + ("A" if token[mid] != "A" else "B") + token[mid + 1 :]
         with pytest.raises(TokenError, match="invalid"):
             token_service.verify(tampered, salt="password-reset", max_age_seconds=60)
 
