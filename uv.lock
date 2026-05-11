@@ -141,7 +141,7 @@ requires-dist = [
     { name = "opentelemetry-instrumentation-flask", marker = "extra == 'otel'", specifier = "==0.48b0" },
     { name = "opentelemetry-instrumentation-sqlalchemy", marker = "extra == 'otel'", specifier = "==0.48b0" },
     { name = "opentelemetry-sdk", marker = "extra == 'otel'", specifier = "==1.27" },
-    { name = "prometheus-flask-exporter", specifier = "==0.23.1" },
+    { name = "prometheus-flask-exporter", specifier = "==0.23.2" },
     { name = "pydantic-settings", specifier = "==2.14.1" },
     { name = "python-json-logger", specifier = "==4.1.0" },
     { name = "sentry-sdk", extras = ["flask"], specifier = "==2.59.0" },
@@ -1621,15 +1621,15 @@ wheels = [
 
 [[package]]
 name = "prometheus-flask-exporter"
-version = "0.23.1"
+version = "0.23.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "flask" },
     { name = "prometheus-client" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f8/bd/27b7f411e979e6323b039e2b215a7ec943382b585fae30282f26d41ca7be/prometheus_flask_exporter-0.23.1.tar.gz", hash = "sha256:587c770a1061e93d72c5cbcdefbd7b633fb764e39dffd7dd16932c9124559244", size = 31557, upload-time = "2024-07-11T00:53:59.839Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/8f/40/736bd2cb19b065cea395deb57b5b520a2df105dab92af3fb200ee560ad92/prometheus_flask_exporter-0.23.2.tar.gz", hash = "sha256:41fc9bbd7d48cc958ed8384aacf60c3621d9e903768be61c4e7f0c63872eaf1a", size = 31801, upload-time = "2025-03-11T23:05:30.409Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/78/17/54b7f92f25de491f746002e1e734fdc260edf2dd75c4777c7b77b49b7e31/prometheus_flask_exporter-0.23.1-py3-none-any.whl", hash = "sha256:ab49b2c40b57cd35cd51e91e59b3c306b3754477095c4f3cf679034c5122398c", size = 18932, upload-time = "2024-07-11T00:53:57.476Z" },
+    { url = "https://files.pythonhosted.org/packages/96/04/486040e241708a723ee7673d98733c35f2cf081f63ced0091124b8572177/prometheus_flask_exporter-0.23.2-py3-none-any.whl", hash = "sha256:94922a636d4c1d8b68e1ee605c30a23e9bbb0b21756df8222aa919634871784c", size = 19002, upload-time = "2025-03-11T23:05:29.176Z" },
 ]
 
 [[package]]
