@@ -57,7 +57,7 @@ jobs:
         run: uv sync --no-dev --frozen
       - name: Generate CycloneDX SBOM
         run: uv run --with cyclonedx-bom cyclonedx-py environment --output-file sbom.json
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: sbom
           path: sbom.json
