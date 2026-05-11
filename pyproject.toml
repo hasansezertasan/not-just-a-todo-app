@@ -29,7 +29,7 @@ dependencies = [
   "sentry-sdk[flask]==2.59.0",
   "SQLAlchemy-Mixins==2.0.5",
   "SQLAlchemy-Utils[password]==0.42.1",
-  "flask-compress==1.15",
+  "flask-compress==1.24",
   "flask-static-digest==0.4.1",
   "prometheus-flask-exporter==0.23.1",
   "flask-limiter==4.1.1",
