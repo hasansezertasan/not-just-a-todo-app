@@ -298,7 +298,6 @@ Planned features:
   - Unit tests for models and views
   - Add test fixtures for users, sequences, and templates
   - Add CI workflow for running tests on push/PR
-  - Add code coverage reporting to CI
 - Daily Routine (auto-instantiated sequences)
 - Instant Tasks (standalone tasks outside sequences)
 - Docker deployment to Docker Hub
