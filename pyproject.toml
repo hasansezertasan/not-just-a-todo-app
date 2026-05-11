@@ -41,9 +41,9 @@ dependencies = [
 [project.optional-dependencies]
 # OpenTelemetry is optional — only pulled when OTEL_ENDPOINT is set.
 otel = [
-  "opentelemetry-api==1.27",
-  "opentelemetry-sdk==1.27",
-  "opentelemetry-exporter-otlp==1.27",
+  "opentelemetry-api==1.41.1",
+  "opentelemetry-sdk==1.41.1",
+  "opentelemetry-exporter-otlp==1.41.1",
   "opentelemetry-instrumentation-flask==0.48b0",
   "opentelemetry-instrumentation-sqlalchemy==0.48b0",
 ]
