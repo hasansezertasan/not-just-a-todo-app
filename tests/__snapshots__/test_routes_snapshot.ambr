@@ -1,0 +1,39 @@
+# serializer version: 1
+# name: test_url_map_snapshot
+  '''
+  /                                                            GET                  admin.index
+  /about/                                                      GET                  about.index
+  /bootstrap/static/<path:filename>                            GET                  bootstrap.static
+  /change-password/                                            GET,POST             change-password.index
+  /edit-profile/                                               GET,POST             edit-profile.index
+  /healthz                                                     GET                  healthz
+  /livez                                                       GET                  healthz
+  /login/                                                      GET,POST             admin.login_view
+  /logout/                                                     GET                  admin.logout_view
+  /metrics                                                     GET                  prometheus_metrics
+  /readyz                                                      GET                  readyz
+  /register/                                                   GET,POST             admin.register_view
+  /sequence-template/                                          GET                  sequence-template.index_view
+  /sequence-template/action/                                   POST                 sequence-template.action_view
+  /sequence-template/ajax/lookup/                              GET                  sequence-template.ajax_lookup
+  /sequence-template/ajax/update/                              POST                 sequence-template.ajax_update
+  /sequence-template/delete/                                   POST                 sequence-template.delete_view
+  /sequence-template/details/                                  GET                  sequence-template.details_view
+  /sequence-template/edit/                                     GET,POST             sequence-template.edit_view
+  /sequence-template/export/<export_type>/                     GET                  sequence-template.export
+  /sequence-template/new/                                      GET,POST             sequence-template.create_view
+  /sequence-template/populate/<int:id>                         GET                  sequence-template.populate
+  /sequence/                                                   GET                  sequence.index_view
+  /sequence/action/                                            POST                 sequence.action_view
+  /sequence/ajax/lookup/                                       GET                  sequence.ajax_lookup
+  /sequence/ajax/update/                                       POST                 sequence.ajax_update
+  /sequence/delete/                                            POST                 sequence.delete_view
+  /sequence/details/                                           GET                  sequence.details_view
+  /sequence/edit/                                              GET,POST             sequence.edit_view
+  /sequence/export/<export_type>/                              GET                  sequence.export
+  /sequence/new/                                               GET,POST             sequence.create_view
+  /sequence/progress/<int:_id>/task/<int:task_id>/complete     GET                  sequence.complete
+  /sequence/progress/<int:id>                                  GET                  sequence.progress
+  /static/admin/<path:filename>                                GET                  admin.static
+  '''
+# ---

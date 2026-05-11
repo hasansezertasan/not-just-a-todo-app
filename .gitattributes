@@ -2,3 +2,4 @@
 openapi_schema.json linguist-generated=true
 asyncapi.json linguist-generated=true
 uv.lock linguist-generated=true
+bun.lock linguist-generated=true

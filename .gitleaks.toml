@@ -1,0 +1,10 @@
+# Gitleaks configuration. Extends defaults from the bundled config.
+# See: https://github.com/gitleaks/gitleaks#configuration
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Test-fixture strings flagged as generic-api-key by entropy heuristic"
+# token-service tests pass non-secret fixtures (e.g. salt="password-reset")
+# whose surrounding arg list trips the default generic-api-key rule.
+paths = ['''tests/test_token_service\.py''']

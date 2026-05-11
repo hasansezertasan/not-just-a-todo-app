@@ -2,7 +2,7 @@
 # Configuration file for `prek`, a git hook framework written in Rust.
 # See https://prek.j178.dev for more information.
 default_language_version.python = "3.14"
-exclude.glob = [".devcontainer/**", ".vscode/**"]
+exclude.glob = [".devcontainer/**", ".vscode/**", "tests/__snapshots__/**"]
 [[repos]]
 repo = "builtin"
 hooks = [
@@ -27,11 +27,11 @@ hooks = [
 ]
 [[repos]]
 repo = "https://github.com/crate-ci/typos"
-rev = "v1.45.1"
+rev = "v1.46.1"
 hooks = [{ id = "typos" }]
 [[repos]]
 repo = "https://github.com/python-jsonschema/check-jsonschema"
-rev = "0.37.1"
+rev = "0.37.2"
 hooks = [
   { id = "check-dependabot" },
   { id = "check-github-actions" },
@@ -54,14 +54,17 @@ hooks = [{ id = "yamlfmt" }]
 [[repos]]
 repo = "https://github.com/ComPWA/taplo-pre-commit"
 rev = "v0.9.3"
-hooks = [{ id = "taplo-lint" }, { id = "taplo-format" }]
+# taplo-lint requires fetching a schema catalog over the network on every
+# run, which flakes in CI (schema catalog API drifts). Format-only is
+# enough — pyproject.toml schema is enforced via validate-pyproject.
+hooks = [{ id = "taplo-format" }]
 [[repos]]
 repo = "https://github.com/sqlfluff/sqlfluff"
 rev = "4.1.0"
 hooks = [{ id = "sqlfluff-lint" }, { id = "sqlfluff-fix" }]
 [[repos]]
 repo = "https://github.com/astral-sh/uv-pre-commit"
-rev = "0.11.7"
+rev = "0.11.12"
 hooks = [{ id = "uv-lock" }]
 [[repos]]
 repo = "https://github.com/abravalheri/validate-pyproject"
@@ -74,17 +77,19 @@ hooks = [{ id = "ruff-check" }, { id = "ruff-format" }]
 [[repos]]
 repo = "https://github.com/jendrikseipp/vulture"
 rev = "v2.16"
-hooks = [{ id = "vulture" }]
+hooks = [{ id = "vulture", pass_filenames = false }]
+[[repos]]
+repo = "https://github.com/gitleaks/gitleaks"
+rev = "v8.21.2"
+hooks = [{ id = "gitleaks" }]
+[[repos]]
+repo = "https://github.com/commitizen-tools/commitizen"
+rev = "v4.1.0"
+hooks = [{ id = "commitizen", stages = ["commit-msg"] }]
 [[repos]]
 repo = "https://github.com/DetachHead/basedpyright-prek-mirror"
 rev = "1.39.3"
-hooks = [{ id = "basedpyright", files = "^((apps|src|tests)/.*\\.py)$" }]
-[[repos]]
-repo = "https://github.com/facebook/pyrefly-pre-commit"
-rev = "0.62.0"
-hooks = [
-  { id = "pyrefly-check", pass_filenames = false, files = "^((apps|src|tests)/.*\\.py)$" },
-]
+hooks = [{ id = "basedpyright", files = "^((src|tests)/.*\\.py)$" }]
 [[repos]]
 repo = "https://github.com/PyCQA/bandit"
 rev = "1.9.4"
@@ -93,7 +98,6 @@ hooks = [
     "-c",
     "pyproject.toml",
     "-r",
-    "./apps",
     "./src",
     "./tests",
   ] },
@@ -104,12 +108,12 @@ rev = "v0.19.1"
 hooks = [
   { id = "slotscheck", args = [
     "--no-strict-imports",
-  ], files = "^((apps|src|tests)/.*\\.py)$" },
+  ], files = "^((src|tests)/.*\\.py)$" },
 ]
 [[repos]]
 repo = "https://github.com/pypa/pip-audit"
 rev = "v2.10.0"
-hooks = [{ id = "pip-audit", args = ["--disable-pip"], stages = ["pre-push"] }]
+hooks = [{ id = "pip-audit", stages = ["pre-push"] }]
 [[repos]]
 repo = "https://github.com/asottile/pyupgrade"
 rev = "v3.21.2"

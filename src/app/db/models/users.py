@@ -1,4 +1,5 @@
 # Copyright 2024 Hasan Sezer Taşan <hasansezertasan@gmail.com>
+import datetime
 
 from flask_login import UserMixin
 from sqlalchemy.orm import (
@@ -18,12 +19,10 @@ class User(Base, UserMixin, StandardMixin):
     username: Mapped[str] = mapped_column(unique=True)
     hashed_password: Mapped[str] = mapped_column(
         PasswordType(
-            schemes=[
-                "bcrypt",
-            ],
-            deprecated=[
-                "auto",
-            ],
+            # argon2 first → new hashes use argon2; bcrypt kept so existing
+            # rows still verify and get rehashed-on-login transparently.
+            schemes=["argon2", "bcrypt"],
+            deprecated=["auto"],
         ),
     )
     first_name: Mapped[str] = mapped_column()
@@ -36,3 +35,7 @@ class User(Base, UserMixin, StandardMixin):
     )
     is_active: Mapped[bool] = mapped_column(default=True)
     is_superuser: Mapped[bool] = mapped_column(default=False)
+
+    # Lockout state — see app.services.auth
+    failed_login_count: Mapped[int] = mapped_column(default=0, server_default="0")
+    locked_until: Mapped[datetime.datetime | None] = mapped_column(default=None)

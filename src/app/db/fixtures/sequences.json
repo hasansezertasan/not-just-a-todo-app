@@ -1,0 +1,72 @@
+[
+    {
+        "description": "Leaving home safely",
+        "name": "Leave Home",
+        "tasks": [
+            {
+                "description": "Turn off the combi boiler so it doesn't heat an empty house",
+                "name": "Turn off the combi"
+            },
+            {
+                "description": "Lower the thermostat so it doesn't heat an empty house",
+                "name": "Lower the thermostat"
+            },
+            {
+                "description": "Check the stove is off",
+                "name": "Check the stove"
+            },
+            {
+                "description": "Turn off the kettle",
+                "name": "Turn off the kettle"
+            },
+            {
+                "description": "Unplug the kettle and stove",
+                "name": "Unplug the kettle and stove"
+            },
+            {
+                "description": "Check the taps are off",
+                "name": "Check the taps"
+            },
+            {
+                "description": "Check the windows are closed",
+                "name": "Check the windows"
+            },
+            {
+                "description": "Turn off the computer",
+                "name": "Turn off the computer"
+            },
+            {
+                "description": "Turn off the computer PSU",
+                "name": "Turn off the computer PSU"
+            },
+            {
+                "description": "Unplug the computer",
+                "name": "Unplug the computer"
+            }
+        ],
+        "user": "hasansezertasan"
+    },
+    {
+        "description": "Going for a ride",
+        "name": "Going for a ride",
+        "tasks": [
+            {
+                "description": "Check the tyres are inflated",
+                "name": "Check the tyres"
+            },
+            {
+                "description": "Wear the seatbelt",
+                "name": "Wear the seatbelt"
+            },
+            {
+                "description": "Check the mirrors",
+                "name": "Check the mirrors"
+            },
+            {
+                "description": "Check the fuel",
+                "name": "Check the fuel"
+            }
+        ],
+        "user": "dineshchugtai"
+    }
+]

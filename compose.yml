@@ -1,0 +1,22 @@
+---
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: not-just-a-todo-app:latest
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      APP_ENV: production
+      SQLALCHEMY_DATABASE_URL: sqlite:////app/instance/db.sqlite3
+      WEB_CONCURRENCY: "2"
+    volumes:
+      - app-instance:/app/instance
+      # Healthcheck inherited from Dockerfile HEALTHCHECK instruction —
+      # avoids drift between two definitions of the same probe.
+volumes:
+  app-instance:

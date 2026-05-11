@@ -1,8 +1,6 @@
 # Copyright 2024 Hasan Sezer Taşan <hasansezertasan@gmail.com>
 """Custom syrupy snapshot extensions."""
 
-from __future__ import annotations
-
 from syrupy.extensions.single_file import SingleFileSnapshotExtension
 
 

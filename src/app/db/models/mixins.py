@@ -1,10 +1,9 @@
 # Copyright 2024 Hasan Sezer Taşan <hasansezertasan@gmail.com>
-from __future__ import annotations
 
 import datetime
 from typing import TYPE_CHECKING
 
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, func
 from sqlalchemy.orm import (
     Mapped,
     declared_attr,
@@ -25,12 +24,15 @@ class StandardMixin:
         index=True,
     )
     date_created: Mapped[datetime.datetime] = mapped_column(
-        default=datetime.datetime.utcnow,
+        default=lambda: datetime.datetime.now(datetime.UTC),
+        server_default=func.now(),
         index=True,
     )
     date_updated: Mapped[datetime.datetime] = mapped_column(
-        default=datetime.datetime.utcnow,
-        onupdate=datetime.datetime.utcnow,
+        default=lambda: datetime.datetime.now(datetime.UTC),
+        onupdate=lambda: datetime.datetime.now(datetime.UTC),
+        server_default=func.now(),
+        server_onupdate=func.now(),
         index=True,
     )
 
@@ -54,5 +56,5 @@ class UserPropertyMixin:
         return mapped_column(ForeignKey("user.id"))
 
     @declared_attr
-    def user(self) -> Mapped[User]:  # type: ignore
+    def user(self) -> Mapped[User]:
         return relationship("User")

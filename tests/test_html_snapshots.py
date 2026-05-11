@@ -6,8 +6,6 @@ Refresh baselines after intentional markup changes:
     pytest --snapshot-update tests/test_html_snapshots.py
 """
 
-from __future__ import annotations
-
 from typing import TYPE_CHECKING
 
 import pytest
@@ -18,12 +16,11 @@ if TYPE_CHECKING:
     from flask.testing import FlaskClient
     from syrupy.assertion import SnapshotAssertion
 
-
 PAGES = [
-    ("index", "/admin/"),
+    ("index", "/"),
     ("about", "/about/"),
-    ("login", "/admin/login"),
-    ("register", "/admin/register"),
+    ("login", "/login/"),
+    ("register", "/register/"),
 ]
 
 

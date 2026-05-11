@@ -1,7 +1,7 @@
 ---
 self-hosted-runner:
   # Labels of self-hosted runner in array of strings.
-  labels: ["pm-github-runner-1"]
+  labels: []
 # Configuration variables in array of strings defined in your repository or
 # organization. `null` means disabling configuration variables check.
 # Empty array means no configuration variable is allowed.

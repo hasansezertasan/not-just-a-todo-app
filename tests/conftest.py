@@ -1,32 +1,33 @@
 # Copyright 2024 Hasan Sezer Taşan <hasansezertasan@gmail.com>
 
-import os
 import socket
 import threading
+from typing import TYPE_CHECKING
 
 import pytest
-
-os.environ.setdefault("SQLALCHEMY_DATABASE_URL", "sqlite:///:memory:")
-os.environ.setdefault("SESSION_SECRET_KEY", "test-secret")
-
-from collections.abc import Iterator
-
-from flask import Flask
-from flask.testing import FlaskClient
 from werkzeug.serving import make_server
 
-from app.app import app as flask_app  # noqa: E402
-from app.db.models.base import db as _db  # noqa: E402
-from app.db.models.users import User  # noqa: E402
+from app.config import Settings
+from app.db.models.base import db as _db
+from app.db.models.users import User
+from app.factory import create_app
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
+
+    from flask import Flask
+    from flask.testing import FlaskClient
 
 
 @pytest.fixture(scope="session")
 def app() -> Flask:
-    flask_app.config.update(
-        TESTING=True,
-        WTF_CSRF_ENABLED=False,
-        SQLALCHEMY_DATABASE_URI="sqlite:///:memory:",
+    settings = Settings(
+        app_env="testing",
+        sqlalchemy_database_url="sqlite:///:memory:",
+        session_secret_key="test-secret",  # type: ignore[arg-type]
     )
+    flask_app = create_app(settings)
+    flask_app.config.update(TESTING=True, WTF_CSRF_ENABLED=False)
     return flask_app
 
 
