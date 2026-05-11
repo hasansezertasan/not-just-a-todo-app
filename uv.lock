@@ -156,7 +156,7 @@ dev = [
     { name = "coverage", extras = ["toml"], specifier = "==7.14.0" },
     { name = "coverage-enable-subprocess", specifier = "==1.0" },
     { name = "flask-debugtoolbar", specifier = "==0.16" },
-    { name = "hypothesis", specifier = "==6.119" },
+    { name = "hypothesis", specifier = "==6.152.5" },
     { name = "mypy", specifier = "==2.0.0" },
     { name = "pip-audit", specifier = "==2.7" },
     { name = "pylint", specifier = "==4.0.5" },
@@ -188,7 +188,7 @@ test = [
     { name = "coverage", extras = ["toml"], specifier = "==7.14.0" },
     { name = "coverage-enable-subprocess", specifier = "==1.0" },
     { name = "flask-debugtoolbar", specifier = "==0.16" },
-    { name = "hypothesis", specifier = "==6.119" },
+    { name = "hypothesis", specifier = "==6.152.5" },
     { name = "pip-audit", specifier = "==2.7" },
     { name = "pytest", specifier = "==9.0.3" },
     { name = "pytest-asyncio", specifier = "==1.3.0" },
@@ -300,15 +300,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/07/63/0adf26577da5eff6eb7a177876c1cfa213856be9926a000f65c4add9692b/astroid-4.0.4.tar.gz", hash = "sha256:986fed8bcf79fb82c78b18a53352a0b287a73817d6dbcfba3162da36667c49a0", size = 406358, upload-time = "2026-02-07T23:35:07.509Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/b0/cf/1c5f42b110e57bc5502eb80dbc3b03d256926062519224835ef08134f1f9/astroid-4.0.4-py3-none-any.whl", hash = "sha256:52f39653876c7dec3e3afd4c2696920e05c83832b9737afc21928f2d2eb7a753", size = 276445, upload-time = "2026-02-07T23:35:05.344Z" },
-]
-
-[[package]]
-name = "attrs"
-version = "26.1.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/9a/8e/82a0fe20a541c03148528be8cac2408564a6c9a0cc7e9171802bc1d26985/attrs-26.1.0.tar.gz", hash = "sha256:d03ceb89cb322a8fd706d4fb91940737b6642aa36998fe130a9bc96c985eff32", size = 952055, upload-time = "2026-03-19T14:22:25.026Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/64/b4/17d4b0b2a2dc85a6df63d1157e028ed19f90d4cd97c36717afef2bc2f395/attrs-26.1.0-py3-none-any.whl", hash = "sha256:c647aa4a12dfbad9333ca4e71fe62ddc36f4e63b2d260a37a8b83d2f043ac309", size = 67548, upload-time = "2026-03-19T14:22:23.645Z" },
 ]
 
 [[package]]
@@ -1001,15 +992,14 @@ wheels = [
 
 [[package]]
 name = "hypothesis"
-version = "6.119.0"
+version = "6.152.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "attrs" },
     { name = "sortedcontainers" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/48/f2/9f8aa06c692549cbe2c4d8993bd8563092ca88fc65a6a58c52a400c89d67/hypothesis-6.119.0.tar.gz", hash = "sha256:ca441c6ef55d17f27f642fa08657e80f9c13d9da7ae191c8ad58fbc2f16acd1b", size = 411964, upload-time = "2024-11-15T06:55:12.648Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/bf/a5/7c66caf83d51b0b8bba1aca94e34c3ae4ff36d58dfd6432d9b29bcf5ce2f/hypothesis-6.152.5.tar.gz", hash = "sha256:d6e7a3b163ee7f951a2652cfa26ea4c5ff5e94afcdfcaccf1ed72f0435276ff4", size = 466966, upload-time = "2026-05-10T20:31:37.644Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/45/be/fd7deddef49491c01375345b1a21a5867603b021460c3efae5a16285197c/hypothesis-6.119.0-py3-none-any.whl", hash = "sha256:99d660bfdab62cfd7c9966e3829a217697671e0b992f0372b5b43647b3414471", size = 473116, upload-time = "2024-11-15T06:55:09.211Z" },
+    { url = "https://files.pythonhosted.org/packages/9b/22/fc48568d69a219825eb0111c2e92ab261c0a6a6a6f01bd82c1dd465c636e/hypothesis-6.152.5-py3-none-any.whl", hash = "sha256:9d6fc81a7321dc34ec6a986c0bc5d669746d1cc694bc12a39280cec9c549f7c4", size = 532706, upload-time = "2026-05-10T20:31:34.014Z" },
 ]
 
 [[package]]
