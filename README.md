@@ -3,6 +3,7 @@
 > Experimental - Every dev needs to build a todo app...
 
 [![Code style: djlint](https://img.shields.io/badge/html%20style-djlint-blue.svg)](https://www.djlint.com)
+[![codecov](https://codecov.io/gh/hasansezertasan/not-just-a-todo-app/branch/main/graph/badge.svg)](https://codecov.io/gh/hasansezertasan/not-just-a-todo-app)
 
 ## Table of Contents
 
