@@ -33,7 +33,7 @@ dependencies = [
   "flask-static-digest==0.4.1",
   "prometheus-flask-exporter==0.23.2",
   "flask-limiter==4.1.1",
-  "argon2-cffi==23.1",
+  "argon2-cffi==25.1.0",
   "python-json-logger==4.1.0",
 ]
 
