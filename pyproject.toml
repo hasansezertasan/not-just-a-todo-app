@@ -70,7 +70,7 @@ dev = [
 ]
 lint = [
   "pylint==4.0.5",
-  "mypy==2.0.0",
+  "mypy==2.1.0",
   "pyright==1.1.409",
   "ty==0.0.35",
   "slotscheck==0.19.1",
