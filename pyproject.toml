@@ -73,7 +73,7 @@ lint = [
   "mypy==2.1.0",
   "pyright==1.1.410",
   "ty==0.0.42",
-  "slotscheck==0.19.1",
+  "slotscheck==0.20.0",
 ]
 test = [
   "coverage-enable-subprocess==1.0",
