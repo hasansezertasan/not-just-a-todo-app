@@ -91,7 +91,7 @@ test = [
   "pytest-rerunfailures==16.2",
   "pytest-xdist[psutil]==3.8.0",
   "pytest==9.0.3",
-  "syrupy==5.1.0",
+  "syrupy==5.3.1",
 ]
 
 
