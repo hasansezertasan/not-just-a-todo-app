@@ -79,7 +79,7 @@ test = [
   "coverage-enable-subprocess==1.0",
   "coverage[toml]==7.14.2",
   "flask-debugtoolbar==0.16",
-  "hypothesis==6.155.6",
+  "hypothesis==6.155.7",
   "pip-audit==2.10.1",
   "pytest-asyncio==1.4.0",
   "pytest-check==2.8.0",
