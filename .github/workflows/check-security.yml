@@ -17,6 +17,9 @@ jobs:
       - uses: gitleaks/gitleaks-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Config relocated to .config/; the action auto-discovers only a
+          # root .gitleaks.toml, so point it there explicitly.
+          GITLEAKS_CONFIG: ${{ github.workspace }}/.config/.gitleaks.toml
   pip-audit:
     runs-on: ubuntu-24.04
     steps:
