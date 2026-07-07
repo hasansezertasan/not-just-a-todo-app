@@ -44,8 +44,8 @@ otel = [
   "opentelemetry-api==1.43.0",
   "opentelemetry-sdk==1.43.0",
   "opentelemetry-exporter-otlp==1.43.0",
-  "opentelemetry-instrumentation-flask==0.48b0",
-  "opentelemetry-instrumentation-sqlalchemy==0.48b0",
+  "opentelemetry-instrumentation-flask==0.64b0",
+  "opentelemetry-instrumentation-sqlalchemy==0.64b0",
 ]
 
 
