@@ -39,8 +39,7 @@ jobs:
         # yet, and this app does not use Flask-Security-Too / WebAuthn — it
         # authenticates via Flask-Login. Revisit when a fix ships.
         run: >-
-          uv run --with pip-audit pip-audit --skip-editable
-          --ignore-vuln GHSA-f66q-9rf6-8795
+          uv run --with pip-audit pip-audit --skip-editable --ignore-vuln GHSA-f66q-9rf6-8795
   trivy:
     runs-on: ubuntu-24.04
     needs: pip-audit
