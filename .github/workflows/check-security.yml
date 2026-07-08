@@ -34,7 +34,12 @@ jobs:
       - name: Audit installed packages for known CVEs
         # --skip-editable: the current project installs as editable under
         # `uv sync` and has no PyPI release to audit — only its deps matter.
-        run: uv run --with pip-audit pip-audit --skip-editable
+        # --ignore-vuln GHSA-f66q-9rf6-8795: Flask-Security-Too WebAuthn
+        # reauthentication freshness bypass (medium). No patched release exists
+        # yet, and this app does not use Flask-Security-Too / WebAuthn — it
+        # authenticates via Flask-Login. Revisit when a fix ships.
+        run: >-
+          uv run --with pip-audit pip-audit --skip-editable --ignore-vuln GHSA-f66q-9rf6-8795
   trivy:
     runs-on: ubuntu-24.04
     needs: pip-audit
