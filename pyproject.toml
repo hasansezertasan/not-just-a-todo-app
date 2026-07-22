@@ -64,7 +64,7 @@ app = "flask.cli:main"
 dev = [
   "commitizen>=3.30",
   "tox==4.57.0",
-  "tox-uv==1.35.2",
+  "tox-uv==1.36.0",
   { include-group = "lint" },
   { include-group = "test" },
 ]
