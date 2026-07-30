@@ -8,8 +8,8 @@ jobs:
   test:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v8.3.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: astral-sh/setup-uv@11f9893b081a58869d3b5fccaea48c9e9e46f990 # v8.3.2
         with:
           enable-cache: true
       - name: Sync dependencies
@@ -23,7 +23,7 @@ jobs:
         # Bump this when sustained coverage exceeds the floor by 5+ points.
         run: uv run pytest --cov=app --cov-report=term-missing --cov-report=xml --cov-fail-under=70
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v7
+        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7
         with:
           files: ./coverage.xml
           fail_ci_if_error: false
