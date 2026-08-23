@@ -1,0 +1,18 @@
+# Accepted vulnerabilities — see each entry's justification.
+#
+# Trivy scans the full image, including the system Python shipped by the
+# python:3.14-slim-bookworm base image. The app runs entirely from
+# /app/.venv and never executes the system Python's build-time tooling, so
+# the following base-image findings are not part of the runtime attack
+# surface. They disappear on the next base-image bump.
+
+# msgpack 1.1.2 (base-image system Python). Out-of-bounds read on Unpacker
+# reuse. Build-time package only; the app's own dependency graph resolves
+# msgpack 1.2.1 (and only under the dev group). Fixed in 1.2.1.
+GHSA-6v7p-g79w-8964
+
+# setuptools 70.3.0 (base-image system Python). Path traversal in
+# PackageIndex. Install-time tool only; no package installation happens at
+# runtime. The app's own graph pins setuptools 83.0.0 (dev group). Fixed in
+# 78.1.1.
+CVE-2025-47273
