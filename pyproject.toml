@@ -82,7 +82,7 @@ test = [
   "hypothesis==6.157.0",
   "pip-audit==2.10.1",
   "pytest-asyncio==1.4.0",
-  "pytest-check==2.8.0",
+  "pytest-check==2.9.1",
   "pytest-cov==7.1.0",
   "pytest-dependency==0.6.1",
   "pytest-mock==3.15.1",
