@@ -71,8 +71,8 @@ dev = [
 lint = [
   "pylint==4.0.8",
   "mypy==2.3.1",
-  "pyright==1.1.411",
-  "ty==0.0.79",
+  "pyright==1.1.413",
+  "ty==0.0.80",
   "slotscheck==0.21.0",
 ]
 test = [
