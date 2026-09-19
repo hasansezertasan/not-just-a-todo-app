@@ -9,7 +9,7 @@ on:
     - cron: "0 6 * * 1"
 jobs:
   gitleaks:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       contents: read
     steps:
@@ -23,7 +23,7 @@ jobs:
           # root .gitleaks.toml, so point it there explicitly.
           GITLEAKS_CONFIG: ${{ github.workspace }}/.config/.gitleaks.toml
   pip-audit:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7
       - uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4  # v10.1.0
@@ -41,7 +41,7 @@ jobs:
         run: >-
           uv run --with pip-audit pip-audit --skip-editable --ignore-vuln GHSA-f66q-9rf6-8795
   trivy:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     needs: pip-audit
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7
@@ -55,7 +55,7 @@ jobs:
           exit-code: 1
           ignore-unfixed: true
   sbom:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       contents: read
     steps:
