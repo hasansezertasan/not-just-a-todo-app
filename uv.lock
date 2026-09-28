@@ -124,12 +124,12 @@ requires-dist = [
     { name = "bcrypt", specifier = "==5.0.0" },
     { name = "bootstrap-flask", specifier = "==2.6.0" },
     { name = "flask", specifier = "==3.1.3" },
-    { name = "flask-admin", specifier = "==2.2.0" },
-    { name = "flask-compress", specifier = "==1.24" },
+    { name = "flask-admin", specifier = "==2.2.1" },
+    { name = "flask-compress", specifier = "==1.25" },
     { name = "flask-limiter", specifier = "==4.1.1" },
     { name = "flask-login", specifier = "==0.6.3" },
     { name = "flask-migrate", specifier = "==4.1.0" },
-    { name = "flask-security-too", specifier = "==5.8.2" },
+    { name = "flask-security-too", specifier = "==5.9.0" },
     { name = "flask-sqlalchemy", specifier = "==3.1.1" },
     { name = "flask-static-digest", specifier = "==0.4.1" },
     { name = "flask-wtf", extras = ["email"], specifier = "==1.3.0" },
@@ -142,7 +142,7 @@ requires-dist = [
     { name = "prometheus-flask-exporter", specifier = "==0.23.2" },
     { name = "pydantic-settings", specifier = "==2.15.0" },
     { name = "python-json-logger", specifier = "==4.2.0" },
-    { name = "sentry-sdk", extras = ["flask"], specifier = "==2.69.1" },
+    { name = "sentry-sdk", extras = ["flask"], specifier = "==2.70.0" },
     { name = "sqlalchemy-mixins", specifier = "==2.0.5" },
     { name = "sqlalchemy-utils", extras = ["password"], specifier = "==0.42.1" },
 ]
@@ -891,7 +891,7 @@ wheels = [
 
 [[package]]
 name = "flask-admin"
-version = "2.2.0"
+version = "2.2.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "flask" },
@@ -900,23 +900,23 @@ dependencies = [
     { name = "werkzeug" },
     { name = "wtforms" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/61/08/63770603ea3184782d6996455dcf9520893db58e9bd9f3e346b52d91fcea/flask_admin-2.2.0.tar.gz", hash = "sha256:4a5b844789c10076da89320563600a7addf781e73ab315ae800521b3ec018509", size = 5145370, upload-time = "2026-05-07T09:18:01.969Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/08/86/92b2f706fa49a06a546381e809d84a082f70fe782f6f2d50a72e185422ae/flask_admin-2.2.1.tar.gz", hash = "sha256:08b4b6b63d2100598add70c1dc9a695f484e3c16c894c09ac70af26acb26a87d", size = 5155446, upload-time = "2026-09-21T06:11:08.902Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/81/80/e68f7b341303acd34eea4ec15428355b30300aecd90cc4f91cb9722a280b/flask_admin-2.2.0-py3-none-any.whl", hash = "sha256:a8cb0f484eefb60b1ed345105ebb7199664ff910c52f02081b7881c390f643d3", size = 6056010, upload-time = "2026-05-07T09:17:59.331Z" },
+    { url = "https://files.pythonhosted.org/packages/af/a6/7adc0885b5178d13b7b7ee72b8999a808163f382f156dc864b9e2fd1dec5/flask_admin-2.2.1-py3-none-any.whl", hash = "sha256:a0533fd1968543fc621733316bb9c30774b501c119816f1e83d7dcedacb99895", size = 6067393, upload-time = "2026-09-21T06:11:06.542Z" },
 ]
 
 [[package]]
 name = "flask-compress"
-version = "1.24"
+version = "1.25"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "brotli", marker = "platform_python_implementation != 'PyPy'" },
     { name = "brotlicffi", marker = "platform_python_implementation == 'PyPy'" },
     { name = "flask" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c2/de/2ae0118051b38ab53437328074a696f3ee7d61e15bf7454b78a3088e5bc3/flask_compress-1.24.tar.gz", hash = "sha256:14097cefe59ecb3e466d52a6aeb62f34f125a9f7dadf1f33a53e430ce4a50f31", size = 21089, upload-time = "2026-03-31T15:01:39.005Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/bb/96/ac77047588935c4ec96a087830f817b5e0730c4ab2d5717203f0731140e2/flask_compress-1.25.tar.gz", hash = "sha256:802954fb3af048cf4ca2a3b414393bf2b98466ae8067e6654ea0aa34ba34aff5", size = 21719, upload-time = "2026-09-15T09:53:05.798Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/4c/0f/fe51e0b2301bbd429af44273a923ff92127b18d13abba5ae5a1d60e8e497/flask_compress-1.24-py3-none-any.whl", hash = "sha256:1e63668eb6e3242bd4f6ad98825a924e3984409be90c125477893d586007d00c", size = 11033, upload-time = "2026-03-31T15:01:37.302Z" },
+    { url = "https://files.pythonhosted.org/packages/2d/b0/5f5ab470c3d3b31da361c63974ec70598cd50c9e4d2819641c1cf9988b1a/flask_compress-1.25-py3-none-any.whl", hash = "sha256:6ca78e29728525e575a9e76e0e8e7acc6e0bf1421e0cbfd452bca0a68626166f", size = 11069, upload-time = "2026-09-15T09:53:04.65Z" },
 ]
 
 [[package]]
@@ -985,7 +985,7 @@ sdist = { url = "https://files.pythonhosted.org/packages/14/c7/2531aca6ab7baa377
 
 [[package]]
 name = "flask-security-too"
-version = "5.8.2"
+version = "5.9.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "email-validator" },
@@ -997,9 +997,9 @@ dependencies = [
     { name = "markupsafe" },
     { name = "wtforms" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/96/ad/3e9120b7fe5ac82aa4cd2926913ead138679af6f2b5bd09466bd0f80d6bd/flask_security_too-5.8.2.tar.gz", hash = "sha256:b4ad7448a83679a9c255700bd28979c685e66f89dd7c2eca7de8f4a52e5bd89f", size = 752712, upload-time = "2026-08-12T00:23:56.512Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ff/3e/7347d82bcd44051be119c41e5555c42892a6bb7ae57a197c49a0b25d5d34/flask_security_too-5.9.0.tar.gz", hash = "sha256:116db335c35e46c60db3cb7efbf507ee13b24a70076ba095b3c1e2fc6945e92b", size = 788671, upload-time = "2026-09-24T19:00:42.754Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e7/7a/d0553b193d8dcb9f4969012a24edc8461ef8c5da524afbbe7abc1a05ec27/flask_security_too-5.8.2-py3-none-any.whl", hash = "sha256:fb4b97e6161660681ed264ba2fc10faba49580d2da4331d5156ab35004d66086", size = 493118, upload-time = "2026-08-12T00:23:55.044Z" },
+    { url = "https://files.pythonhosted.org/packages/87/1a/e50e32bebdb663a5d9677d74299278c0b1e0de7210ec6a5394ac68fcb5d6/flask_security_too-5.9.0-py3-none-any.whl", hash = "sha256:675caf9e621271ff551bcffb3b80a95f2ddf489807f667a2013b6d12a54c81a1", size = 514511, upload-time = "2026-09-24T19:00:40.494Z" },
 ]
 
 [[package]]
@@ -2379,15 +2379,15 @@ wheels = [
 
 [[package]]
 name = "sentry-sdk"
-version = "2.69.1"
+version = "2.70.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "certifi" },
     { name = "urllib3" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/10/16/85874f5e51f8d0767ee8c4b4c460c5ea2bc8a1b613d641d9d9577ba39d3a/sentry_sdk-2.69.1.tar.gz", hash = "sha256:f9284b417540b0784b994fa021eb6f1e30ae1cce593d83541274d03c93966eff", size = 1043599, upload-time = "2026-09-08T14:18:19.505Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/52/0a/e37553f3106d0f7f0d4b8ad2c7b92410d131929786ffd116833d3b8164df/sentry_sdk-2.70.0.tar.gz", hash = "sha256:27e4b512f47be93136645dbe8f02d430473ee73a389ce430b2b7104baa66cf75", size = 1047234, upload-time = "2026-09-22T09:40:11.721Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/43/eb/17040f8a60c300fe4cc349088d3e351b88812f478b57a0af05a49af7cb7c/sentry_sdk-2.69.1-py3-none-any.whl", hash = "sha256:2d2556d9a14db548982b914cbed2a2dc07b6e55d941a620752f89a2afccfd78d", size = 528587, upload-time = "2026-09-08T14:18:18.151Z" },
+    { url = "https://files.pythonhosted.org/packages/eb/ff/b1e56f009bfb9b8023910b533d5ebf4ec5650da49891f2b8c7f3d4815401/sentry_sdk-2.70.0-py3-none-any.whl", hash = "sha256:89600e8bb5fc5239cad5c4434217f453204f2207ad29399ea58947460b37a62e", size = 531752, upload-time = "2026-09-22T09:40:10.063Z" },
 ]
 
 [package.optional-dependencies]
