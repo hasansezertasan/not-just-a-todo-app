@@ -1,6 +1,6 @@
 # Operations Notes
 
-Operational guidance that doesn't fit cleanly in CLAUDE.md or README.md.
+Operational guidance that doesn't fit cleanly in AGENTS.md or README.md.
 Each section names the threat model + the lever you have to address it.
 
 ## Database statement timeouts
