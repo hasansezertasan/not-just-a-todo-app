@@ -189,8 +189,8 @@ In `admin.py`:
 ```python
 admin.add_view(
     ViewClass(
-        model=Model,           # For ModelView only
-        session=db.session,    # For ModelView only
+        model=Model,  # For ModelView only
+        session=db.session,  # For ModelView only
         name="Display Name",
         url="/url-path",
         endpoint="endpoint-name",
