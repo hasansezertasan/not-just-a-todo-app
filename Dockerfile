@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.27
+# syntax=docker/dockerfile:1.28
 
 # ---- Stage 1: vendor assets -----------------------------------------------
 FROM oven/bun:1-alpine AS vendor
