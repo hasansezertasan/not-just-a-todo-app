@@ -47,6 +47,12 @@ RUN groupadd --system app \
     && mkdir -p /home/app /app/instance \
     && chown -R app:app /home/app /app
 
+# The app runs from /app/.venv and never needs the base image's pip. Its
+# vendored urllib3 gets flagged by Trivy whenever it lags a CVE fix, and
+# only a new pip release (not a code change) would clear it.
+RUN python -m pip uninstall -y pip \
+    && rm -rf /usr/local/lib/python3.14/ensurepip
+
 WORKDIR /app
 
 COPY --from=builder --chown=app:app /app/.venv /app/.venv
