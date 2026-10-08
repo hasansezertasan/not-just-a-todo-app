@@ -1,7 +1,10 @@
 ---
 self-hosted-runner:
   # Labels of self-hosted runner in array of strings.
-  labels: []
+  # ubuntu-26.04 is a GitHub-hosted runner that the pinned actionlint
+  # release does not know yet; drop this once actionlint learns the label.
+  labels:
+    - ubuntu-26.04
 # Configuration variables in array of strings defined in your repository or
 # organization. `null` means disabling configuration variables check.
 # Empty array means no configuration variable is allowed.
