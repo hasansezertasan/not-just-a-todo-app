@@ -122,7 +122,7 @@ rev = "v2.10.1"
 hooks = [{ id = "pip-audit", stages = ["pre-push"] }]
 [[repos]]
 repo = "https://github.com/asottile/pyupgrade"
-rev = "v3.21.2"
+rev = "v3.22.0"
 hooks = [{ id = "pyupgrade", args = ["--py314-plus"] }]
 [[repos]]
 repo = "https://github.com/djlint/djLint"
