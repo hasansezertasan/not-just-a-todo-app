@@ -1,7 +1,7 @@
 # Copyright 2024 Hasan Sezer Taşan <hasansezertasan@gmail.com>
 """Sequence + Task domain operations."""
 
-import datetime
+import datetime as dt
 
 from app.db.models.sequences import Sequence, Task
 from app.db.models.templates import SequenceTemplate
@@ -37,7 +37,7 @@ def mark_task_completed(*, task_id: int) -> Task | None:
     task = Task.query.filter(Task.id == task_id).first()
     if task is None:
         return None
-    task.date_completed = datetime.datetime.now(datetime.UTC)
+    task.date_completed = dt.datetime.now(dt.UTC)
     task.upsert()
     return task
 

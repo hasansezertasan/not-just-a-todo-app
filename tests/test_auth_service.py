@@ -1,7 +1,7 @@
 # Copyright 2024 Hasan Sezer Taşan <hasansezertasan@gmail.com>
 """Account-lockout service tests."""
 
-import datetime
+import datetime as dt
 from typing import TYPE_CHECKING
 
 from app.services import auth as auth_service
@@ -41,8 +41,8 @@ def test_expired_lock_no_longer_locks(user: User) -> None:
     """A lock from the past should not register as currently locked."""
     user.failed_login_count = 5
     # Naive UTC to match what SQLite returns from `locked_until`.
-    user.locked_until = datetime.datetime.now(datetime.UTC).replace(
-        tzinfo=None
-    ) - datetime.timedelta(minutes=1)
+    user.locked_until = dt.datetime.now(dt.UTC).replace(tzinfo=None) - dt.timedelta(
+        minutes=1
+    )
     user.upsert()
     assert auth_service.is_locked(user) is False
