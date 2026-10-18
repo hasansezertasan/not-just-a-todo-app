@@ -1,6 +1,6 @@
 # Copyright 2024 Hasan Sezer Taşan <hasansezertasan@gmail.com>
 
-import datetime
+import datetime as dt
 
 from app.db.models.sequences import Sequence, Task
 from app.db.models.templates import SequenceTemplate, TaskTemplate
@@ -86,7 +86,7 @@ def test_sequence_task_count_properties(user: User) -> None:
         description="d",
         sequence_id=seq.id,
         user_id=user.id,
-        date_completed=datetime.datetime.now(datetime.UTC),
+        date_completed=dt.datetime.now(dt.UTC),
     ).upsert()
     Task(
         name="t2",

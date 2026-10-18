@@ -6,7 +6,7 @@ Pairs with flask-limiter's per-IP rate limit. The IP limit slows brute-force
 specific username even when attempts come from rotating IPs.
 """
 
-import datetime
+import datetime as dt
 from typing import TYPE_CHECKING
 
 from flask import current_app
@@ -15,7 +15,7 @@ if TYPE_CHECKING:
     from app.db.models.users import User
 
 
-def _now() -> datetime.datetime:
+def _now() -> dt.datetime:
     """Naive UTC timestamp.
 
     SQLite stores datetimes without timezone metadata; mixing naive (DB)
@@ -23,7 +23,7 @@ def _now() -> datetime.datetime:
     naive UTC everywhere keeps the contract uniform across SQLite/MySQL/
     Postgres.
     """
-    return datetime.datetime.now(datetime.UTC).replace(tzinfo=None)
+    return dt.datetime.now(dt.UTC).replace(tzinfo=None)
 
 
 def is_locked(user: User) -> bool:
@@ -32,7 +32,7 @@ def is_locked(user: User) -> bool:
         return False
     locked_until = user.locked_until
     if locked_until.tzinfo is not None:
-        locked_until = locked_until.astimezone(datetime.UTC).replace(tzinfo=None)
+        locked_until = locked_until.astimezone(dt.UTC).replace(tzinfo=None)
     return locked_until > _now()
 
 
@@ -43,7 +43,7 @@ def record_failed_login(user: User) -> None:
 
     user.failed_login_count = (user.failed_login_count or 0) + 1
     if user.failed_login_count >= threshold:
-        user.locked_until = _now() + datetime.timedelta(minutes=minutes)
+        user.locked_until = _now() + dt.timedelta(minutes=minutes)
         # Bump the lockout Prometheus counter on the *transition* to locked,
         # not on every failed attempt — gives a useful "lockouts/sec" metric.
         from app.observability import metrics as domain_metrics

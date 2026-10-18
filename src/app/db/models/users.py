@@ -1,5 +1,5 @@
 # Copyright 2024 Hasan Sezer Taşan <hasansezertasan@gmail.com>
-import datetime
+import datetime as dt
 
 from flask_login import UserMixin
 from sqlalchemy.orm import (
@@ -38,4 +38,4 @@ class User(Base, UserMixin, StandardMixin):
 
     # Lockout state — see app.services.auth
     failed_login_count: Mapped[int] = mapped_column(default=0, server_default="0")
-    locked_until: Mapped[datetime.datetime | None] = mapped_column(default=None)
+    locked_until: Mapped[dt.datetime | None] = mapped_column(default=None)

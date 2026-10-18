@@ -1,6 +1,6 @@
 # Copyright 2024 Hasan Sezer Taşan <hasansezertasan@gmail.com>
 
-import datetime
+import datetime as dt
 
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import (
@@ -49,4 +49,4 @@ class Task(Base, StandardMixin, UserPropertyMixin):
     description: Mapped[str]
     sequence_id: Mapped[int] = mapped_column(ForeignKey("sequence.id"))
     sequence: Mapped[Sequence] = relationship(back_populates="tasks")
-    date_completed: Mapped[datetime.datetime | None]
+    date_completed: Mapped[dt.datetime | None]

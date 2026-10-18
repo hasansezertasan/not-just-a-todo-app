@@ -1,6 +1,6 @@
 # Copyright 2024 Hasan Sezer Taşan <hasansezertasan@gmail.com>
 
-import datetime
+import datetime as dt
 from typing import TYPE_CHECKING
 
 from sqlalchemy import ForeignKey, func
@@ -23,14 +23,14 @@ class StandardMixin:
         autoincrement=True,
         index=True,
     )
-    date_created: Mapped[datetime.datetime] = mapped_column(
-        default=lambda: datetime.datetime.now(datetime.UTC),
+    date_created: Mapped[dt.datetime] = mapped_column(
+        default=lambda: dt.datetime.now(dt.UTC),
         server_default=func.now(),
         index=True,
     )
-    date_updated: Mapped[datetime.datetime] = mapped_column(
-        default=lambda: datetime.datetime.now(datetime.UTC),
-        onupdate=lambda: datetime.datetime.now(datetime.UTC),
+    date_updated: Mapped[dt.datetime] = mapped_column(
+        default=lambda: dt.datetime.now(dt.UTC),
+        onupdate=lambda: dt.datetime.now(dt.UTC),
         server_default=func.now(),
         server_onupdate=func.now(),
         index=True,
