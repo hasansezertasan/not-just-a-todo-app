@@ -88,7 +88,7 @@
 
 ### Setup
 
-`mise install` only installs the tool versions in `mise.toml` (uv, bun,
+`mise install` only installs the tool versions in `.config/mise.toml` (uv, bun,
 ruff, prek). Project deps are installed separately:
 
 ```bash

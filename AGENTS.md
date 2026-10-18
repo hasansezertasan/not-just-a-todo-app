@@ -63,7 +63,7 @@ src/app/
 
 ### Tool Ecosystem
 
-- **`mise`** (`mise.toml`) — primary task runner, tool version management, environment setup
+- **`mise`** (`.config/mise.toml`) — primary task runner, tool version management, environment setup
 - **`uv`** — Python package manager
 - **`bun`** (`package.json`) — frontend asset management
 
@@ -80,7 +80,7 @@ uv sync --all-groups --all-extras
 bun install && ./tools/copy-vendor-assets.sh
 ```
 
-**Note**: `mise install` only installs the tools listed in `mise.toml`; it
+**Note**: `mise install` only installs the tools listed in `.config/mise.toml`; it
 does not chain into Python/frontend dep installs.
 
 ### Database
