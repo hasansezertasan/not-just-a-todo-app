@@ -11,7 +11,7 @@ RUN mkdir -p vendor/htmx vendor/bootstrap-show-password \
 
 
 # ---- Stage 2: python builder ----------------------------------------------
-FROM python:3.14-slim-bookworm AS builder
+FROM python:3.15-slim-bookworm AS builder
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
 ENV UV_COMPILE_BYTECODE=1 \
@@ -30,7 +30,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 
 # ---- Stage 3: runtime -----------------------------------------------------
-FROM python:3.14-slim-bookworm AS runtime
+FROM python:3.15-slim-bookworm AS runtime
 
 # OCI image annotations — registries (GHCR, Docker Hub, Harbor) surface
 # these in their UI and security scanners use them for SBOM linkage.
