@@ -6,9 +6,7 @@ exclude.glob = [".devcontainer/**", ".vscode/**", "tests/__snapshots__/**"]
 [[repos]]
 repo = "builtin"
 hooks = [
-  { id = "check-added-large-files", args = [
-    "--maxkb=1000",
-  ] },
+  { id = "check-added-large-files", args = ["--maxkb=1000"] },
   { id = "check-case-conflict" },
   { id = "check-executables-have-shebangs" },
   { id = "check-json" },
@@ -21,7 +19,10 @@ hooks = [
   { id = "detect-private-key" },
   { id = "end-of-file-fixer" },
   { id = "fix-byte-order-marker" },
-  { id = "mixed-line-ending" },
+  # .gitignore carries the cobo block, which keeps the lone CR bytes of the
+  # macOS `Icon\r` and `.HFS+ Private Directory Data\r` patterns; normalizing
+  # them would break the block checksum.
+  { id = "mixed-line-ending", exclude = "^\\.gitignore$" },
   { id = "no-commit-to-branch" },
   { id = "trailing-whitespace" },
 ]
